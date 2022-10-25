@@ -2,11 +2,48 @@
 version : "3.8"
 
 services:
+
+  # mariadb:
+  #   container_name: mariadb
+  #   build:
+  #     context: requirements/mariadb
+  #   environment:
+  #     MARIADB_ROOT_PASSWORD: changeme
+  #     MARIADB_DATABASE: mybb
+  #     MARIADB_USER: mybb
+  #     MARIADB_PASSWORD: changeme
+  #   volumes:
+  #     - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
+  #   networks:
+  #     - back-end
+  #   restart: always
+  #   healthcheck:
+  #     test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MARIADB_ROOT_PASSWORD']
+  #     interval: 10s
+  #     timeout: 2s
+  #     retries: 100
+
   nginx:
     container_name: nginx
     build:
       context: requirements/nginx
-    # port:
-      #- "443:443"
+    #command:
+    #environment:
+    # depends_on:
+    #   mariadb:
+    #     condition: service_healthy
+    ports:
+      - "443:443"
+    networks:
+      - front-end
     restart: always
-    
+    volumes:
+      - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
+      - ${INCEPTION_PATH}/mariadb:/var/www/htmp:ro
+
+networks:
+  front-end:
+    driver: bridge
+  back-end:
+    driver: bridge
+
