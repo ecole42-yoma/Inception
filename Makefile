@@ -79,7 +79,7 @@ unpause	:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) unpause
 
 
-.PHONY	:	top ps ls info
+.PHONY	:	top ps ls info show
 top		:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) top
 
@@ -88,6 +88,13 @@ ps		:
 
 ls		:
 	$(SUDO) docker compose ls
+
+show	:
+	@make ls
+	@echo
+	@make ps
+	@echo
+	@make top
 
 info	:
 	$(SUDO) docker info
@@ -102,4 +109,4 @@ command	:
 	@echo "clean, down, fclean, re"
 	@echo "stop, start"
 	@echo "pause, unpause"
-	@echo "top, ps , ls"
+	@echo "top, ps, ls, show, info"
