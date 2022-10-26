@@ -27,11 +27,11 @@ services:
     container_name: nginx
     build:
       context: requirements/nginx
-    #command:
+    command: [nginx, '-g', 'daemon off;']
     #environment:
-    # depends_on:
-    #   mariadb:
-    #     condition: service_healthy
+    #depends_on:
+    #  mariadb:
+    #    condition: service_healthy
     ports:
       - "443:443"
     networks:
