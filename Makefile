@@ -1,4 +1,4 @@
-# **************************************************************************** #
+earl# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -14,41 +14,48 @@ NAME	=	Inception
 
 PATH_DATA	=	~/projects/goinfre/$(USER)/data
 DOCKER_COMPOSE	=	./srcs/docker-compose.yml
-PATH_DOCKER_COMPOSE = ./srcs
+PATH_DOCKER_COMPOSE	=	./srcs
 
+ifndef V
+	SUDO	=
+else
+	SUDO	=	@sudo
+endif
 
 
 .PHONY	:	all	up	docker_install
 up		:	all
 all		:	$(NAME) | make_dir
-	@sudo docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
 
 
 #docker_install:
 	# find docker and docker-compose if not install it
 
-$(NAME)	:	
+$(NAME)	:
 	# preprocess
 
 make_dir:
-	@sudo mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/tools
+	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/tools
+
 
 .PHONY	:	clean down
 clean	:	down
 down	:
-	@sudo docker compose -f $(DOCKER_COMPOSE) down 
-
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) down
 
 
 .PHONY	:	fclean
 fclean	:	clean
-	@sudo rm -rf $(PATH_DATA)
-	@sudo docker system prune -af --volumes
+	$(SUDO) rm -rf $(PATH_DATA)
+	$(SUDO) docker system prune -af --volumes
+
 
 .PHONY	:	re
 re		:
 	@make fclean
 	@make all
+
 
 
 
@@ -80,9 +87,9 @@ info	:
 	@sudo docker info
 
 
-.PHONY	: command c com
-c	: command
-com	: command
+.PHONY	:	command c com
+c		:	command
+com		:	command
 command	:
 	@echo "--- make command list ---  "
 	@echo "all, up"

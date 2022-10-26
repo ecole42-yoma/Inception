@@ -13,11 +13,12 @@ RUN set -x && \
     mkdir -p /docker-entrypoint.d
 
 COPY docker-entrypoint.sh /
-COPY configuration.sh /docker-entrypoint.d
+COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
+#COPY configuration.sh /docker-entrypoint.d
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-EXPOSE 443
+EXPOSE 9000
 
 STOPSIGNAL SIGQUIT
 

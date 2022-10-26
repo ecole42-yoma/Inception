@@ -15,7 +15,7 @@ services:
   #   volumes:
   #     - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
   #   networks:
-  #     - back-end
+  #     - backend
   #   restart: always
   #   healthcheck:
   #     test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MARIADB_ROOT_PASSWORD']
@@ -29,21 +29,25 @@ services:
       context: requirements/nginx
     command: [nginx, '-g', 'daemon off;']
     #environment:
+
     #depends_on:
     #  mariadb:
     #    condition: service_healthy
+    stop_signal: SIGINT
     ports:
       - "443:443"
+    #expose:
+    #  - "9000"
     networks:
-      - front-end
+      - frontend
     restart: always
     volumes:
       - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
       - ${INCEPTION_PATH}/mariadb:/var/www/htmp:ro
 
 networks:
-  front-end:
+  frontend:
     driver: bridge
-  back-end:
+  backend:
     driver: bridge
 
