@@ -28,6 +28,7 @@ endif
 up		:	all
 all		:	$(NAME)	|	make_dir
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
+	@make show
 
 
 #docker_install:
