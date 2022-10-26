@@ -12,8 +12,8 @@ RUN set -x && \
 # create a docker-entrypoint.d directory
     mkdir -p /docker-entrypoint.d
 
-COPY docker-entrypoint.sh /
-COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
+COPY tools/docker-entrypoint.sh /
+COPY conf/configuration.sh /docker-entrypoint.d
 #COPY configuration.sh /docker-entrypoint.d
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
