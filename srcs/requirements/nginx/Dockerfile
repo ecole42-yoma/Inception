@@ -14,7 +14,9 @@ RUN set -x && \
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
-#COPY configuration.sh /docker-entrypoint.d
+
+RUN set -x && \
+    chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

@@ -23,14 +23,6 @@ else
 	SUDO	=	@sudo
 endif
 
-ifdef c
-	CONTAINER	=	$(c)
-	PORTS		=	$(c)
-else
-	CONTAINER	=
-	PORTS		=
-endif
-
 
 .PHONY	:	all	up	docker_install $(NAME)
 up		:	all
@@ -114,7 +106,7 @@ command	:
 
 .PHONY	:	exec curl
 exec	:
-	$(SUDO) docker exec -it $(CONTAINER) /bin/sh
+	$(SUDO) docker exec -it $(c) /bin/sh
 
 curl	:
-	$(SUDO) curl localhost:$(c)
+	$(SUDO) curl localhost:$(p)
