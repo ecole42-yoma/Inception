@@ -1,4 +1,4 @@
-earl# **************************************************************************** #
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -16,24 +16,30 @@ PATH_DATA	=	~/projects/goinfre/$(USER)/data
 DOCKER_COMPOSE	=	./srcs/docker-compose.yml
 PATH_DOCKER_COMPOSE	=	./srcs
 
-ifndef V
-	SUDO	=
-else
+ifndef	V
 	SUDO	=	@sudo
+else
+	SUDO	=
+endif
+
+ifndef	v
+	SUDO	=	@sudo
+else
+	SUDO	=
 endif
 
 
-.PHONY	:	all	up	docker_install
+.PHONY	:	all	up	docker_install $(NAME)
 up		:	all
-all		:	$(NAME) | make_dir
+all		:	$(NAME)	|	make_dir
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
 
 
 #docker_install:
-	# find docker and docker-compose if not install it
+# find docker and docker-compose if not install it
 
 $(NAME)	:
-	# preprocess
+# preprocess
 
 make_dir:
 	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/tools
@@ -61,30 +67,30 @@ re		:
 
 .PHONY	:	stop pause
 stop	:
-	@sudo docker compose -f $(DOCKER_COMPOSE) stop
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) stop
 pause	:
-	@sudo docker compose -f $(DOCKER_COMPOSE) pause
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) pause
 
 
 .PHONY	:	start unpause
 start	:
-	@sudo docker compose -f $(DOCKER_COMPOSE) start
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) start
 unpause	:
-	@sudo docker compose -f $(DOCKER_COMPOSE) unpause
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) unpause
 
 
-.PHONY	:	top ps ls show info
+.PHONY	:	top ps ls info
 top		:
-	@sudo docker compose -f $(DOCKER_COMPOSE) top
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) top
 
 ps		:
-	@sudo docker compose -f $(DOCKER_COMPOSE) ps
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) ps
 
 ls		:
-	@sudo docker compose ls
+	$(SUDO) docker compose ls
 
 info	:
-	@sudo docker info
+	$(SUDO) docker info
 
 
 .PHONY	:	command c com
