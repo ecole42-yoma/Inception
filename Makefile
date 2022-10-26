@@ -16,13 +16,8 @@ PATH_DATA	=	~/projects/goinfre/$(USER)/data
 DOCKER_COMPOSE	=	./srcs/docker-compose.yml
 PATH_DOCKER_COMPOSE	=	./srcs
 
-ifdef	V
-	SUDO	=
-else
-	SUDO	=	@sudo
-endif
-
-ifdef	v
+# check cluser env or vm env
+ifeq ($(WHERE), cluster)
 	SUDO	=
 else
 	SUDO	=	@sudo
@@ -63,8 +58,6 @@ re		:
 	@make all
 
 
-
-
 .PHONY	:	stop pause
 stop	:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) stop
@@ -77,7 +70,6 @@ start	:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) start
 unpause	:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) unpause
-
 
 .PHONY	:	top ps ls info show
 top		:
