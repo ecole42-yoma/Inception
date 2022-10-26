@@ -16,16 +16,16 @@ PATH_DATA	=	~/projects/goinfre/$(USER)/data
 DOCKER_COMPOSE	=	./srcs/docker-compose.yml
 PATH_DOCKER_COMPOSE	=	./srcs
 
-ifndef	V
-	SUDO	=	@sudo
-else
+ifdef	V
 	SUDO	=
+else
+	SUDO	=	@sudo
 endif
 
-ifndef	v
-	SUDO	=	@sudo
-else
+ifdef	v
 	SUDO	=
+else
+	SUDO	=	@sudo
 endif
 
 
