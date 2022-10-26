@@ -42,7 +42,7 @@ $(NAME)	:
 # preprocess
 
 make_dir:
-	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/tools
+	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/nginx $(PATH_DATA)/tools
 
 
 .PHONY	:	clean down

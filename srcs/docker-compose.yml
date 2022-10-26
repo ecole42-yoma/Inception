@@ -41,9 +41,9 @@ services:
     networks:
       - frontend
     restart: always
-    volumes:
-      - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
-      - ${INCEPTION_PATH}/mariadb:/var/www/htmp:ro
+    #volumes:
+    #  - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
+    #  - ${INCEPTION_PATH}/mariadb:/var/www/http:ro
 
 networks:
   frontend:
