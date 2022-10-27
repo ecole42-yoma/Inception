@@ -9,12 +9,12 @@ services:
     build:
       context: requirements/mariadb
     environment:
-      - MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      - MARIADB_DATABASE: ${MARIADB_DATABASE}
-      - MARIADB_USER: ${MARIADB_USER}
-      - MARIADB_PASSWORD: ${MARIADB_PASSWORD}
-    volumes:
-      - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    # volumes:
+    #   - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
     networks:
       - backend
     restart: always

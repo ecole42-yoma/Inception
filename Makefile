@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/27 17:40:57 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/27 18:51:43 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ endif
 .PHONY	:	all	up	docker_install $(NAME)
 up		:	all
 all		:	$(NAME)	|	make_dir
-	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d && \
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
 	$(MAKE) show
 
 

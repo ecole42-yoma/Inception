@@ -1,7 +1,7 @@
 # mariadb
 FROM alpine:3.16.2
 
-RUN set -ex && \
+RUN set -x && \
 	apk update && \
 	apk add --no-cache\
 		mariadb \
@@ -10,10 +10,13 @@ RUN set -ex && \
 
 #COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 
-COPY docker-entrypoint.sh ./
-RUN chmod +x docker-entrypoint.sh
+COPY tools/docker-entrypoint.sh /
+COPY conf/healthcheck.sh /
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+RUN set -x && \
+	chmod +x /docker-entrypoint.sh /healthcheck.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 3306
 
