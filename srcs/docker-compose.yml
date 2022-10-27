@@ -3,51 +3,51 @@ version : "3.8"
 
 services:
 
-# mariadb service
-  db:
-    container_name: mariadb
-    build:
-      context: requirements/mariadb
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${DB_DATABASE}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-    # volumes:
-    #   - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
-    expose:
-      - "3306"
-    networks:
-      - backend
-    restart: always
-    healthcheck:
-      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MARIADB_ROOT_PASSWORD']
-      interval: 10s
-      timeout: 2s
-      retries: 100
+# # mariadb service
+#   db:
+#     container_name: mariadb
+#     build:
+#       context: requirements/mariadb
+#     environment:
+#       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+#       MARIADB_DATABASE: ${DB_DATABASE}
+#       MARIADB_USER: ${DB_USER}
+#       MARIADB_PASSWORD: ${DB_PASSWORD}
+#     # volumes:
+#     #   - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
+#     expose:
+#       - "3306"
+#     networks:
+#       - backend
+#     restart: always
+#     healthcheck:
+#       test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MARIADB_ROOT_PASSWORD']
+#       interval: 10s
+#       timeout: 2s
+#       retries: 100
 
 # nginx service
-  # nginx:
-  #   container_name: nginx
-  #   build:
-  #     context: requirements/nginx
-  #   command: [nginx, '-g', 'daemon off;']
-  #   #environment:
+  nginx:
+    container_name: nginx
+    build:
+      context: requirements/nginx
+    command: [nginx, '-g', 'daemon off;']
+    #environment:
 
-  #   depends_on:
-  #    db:
-  #      condition: service_healthy
-  #   stop_signal: SIGINT
-  #   ports:
-  #     - "443:443"
-  #   expose:
-  #    - "9000"
-  #   networks:
-  #     - frontend
-  #   restart: always
-  #   #volumes:
-  #   #  - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
-  #   #  - ${INCEPTION_PATH}/mariadb:/var/www/http:ro
+    # depends_on:
+    #  db:
+      #  condition: service_healthy
+    stop_signal: SIGINT
+    ports:
+      - "443:443"
+    expose:
+      - "9000"
+    networks:
+      - frontend
+    restart: always
+    #volumes:
+    #  - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
+    #  - ${INCEPTION_PATH}/mariadb:/var/www/http:ro
 
 networks:
   frontend:

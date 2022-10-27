@@ -32,7 +32,6 @@ server {
 	# 	internal;
 	# }
 
-	return
 }
 EOF
 entrypoint_log "$ME: set nginx.conf file - done"
