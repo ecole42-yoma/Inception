@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Healthcheck script for MariaDB
 #
