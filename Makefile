@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yongmkim <codeyoma@gmail.com>              +#+  +:+       +#+         #
+#    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/25 16:33:16 by yongmkim         ###   ########.fr        #
+#    Updated: 2022/10/27 17:40:57 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,11 @@ else
 	SUDO	=	@sudo
 endif
 
-
 .PHONY	:	all	up	docker_install $(NAME)
 up		:	all
 all		:	$(NAME)	|	make_dir
-	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
-	@make show
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d && \
+	$(MAKE) show
 
 
 #docker_install:
@@ -38,7 +37,7 @@ $(NAME)	:
 # preprocess
 
 make_dir:
-	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/nginx $(PATH_DATA)/tools
+	$(SUDO) @mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/nginx $(PATH_DATA)/tools
 
 
 .PHONY	:	clean down
@@ -104,6 +103,7 @@ command	:
 	@echo "pause, unpause"
 	@echo "top, ps, ls, show, info"
 	@echo "exec : exec c='container name'"
+	@echo "curl : curl p='port number'"
 
 .PHONY	:	exec curl
 exec	:
