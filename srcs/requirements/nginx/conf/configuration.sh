@@ -16,6 +16,8 @@ server {
 	listen 443 default_server;
 	listen [::]:443 default_server;
 
+	server_name yongmkim.42.fr;
+
 	location / {
 		root /var/www/localhost;
 		index welcome_page.html welcome_page.php welcome_page.htm;
@@ -29,6 +31,8 @@ server {
 	# location = /404.html {
 	# 	internal;
 	# }
+
+	return
 }
 EOF
 entrypoint_log "$ME: set nginx.conf file - done"
