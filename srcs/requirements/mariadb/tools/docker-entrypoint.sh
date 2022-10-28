@@ -44,4 +44,6 @@ if [ "$1" = "mariadbd" -o "$1" = "mysqld" -o "$1" = "mysqld-debug" ]; then
     fi
 fi
 
+entrypoint_log "$0: Now start up 🔥 "
+echo ""
 exec "$@"

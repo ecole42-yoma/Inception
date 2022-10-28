@@ -45,4 +45,6 @@ if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
     fi
 fi
 
+entrypoint_log "$0: Now start up 🔥 "
+echo ""
 exec "$@"

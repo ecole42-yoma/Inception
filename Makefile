@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/28 23:06:51 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/28 23:19:34 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,6 @@ endif
 up		:	all
 all		:	$(NAME)	|	make_dir
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
-	$(MAKE) show
-
 
 #docker_install:
 # find docker and docker-compose if not install it

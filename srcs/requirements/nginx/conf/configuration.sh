@@ -6,36 +6,46 @@ ME=$(basename $0)
 
 entrypoint_log() {
     if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
-        echo "[NGINX - CONFIGURATION] $@"
+        echo "[NGINX - Configuration] $@"
+    fi
+}
+
+check_error() {
+    if [ $? -ne 0 ]; then
+        echo "[NGINX - Configuration] $@ : fail ❌ "
+        echo ""
+        exit 1
+    else
+        echo "[NGINX - Configuration] $@ : complete ✅ "
+        echo ""
     fi
 }
 
 
 
-
 # delete TLSv1.1
-entrypoint_log "$ME: set nginx.conf file : /etc/nginx/nginx.conf"
+entrypoint_log "$ME: set nginx.conf file - /etc/nginx/nginx.conf 🔍 "
 sed -i "s/ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3/ssl_protocols TLSv1.2 TLSv1.3/g" /etc/nginx/nginx.conf
-entrypoint_log "$ME: set nginx.conf file : Done"
-
+check_error "$ME: set nginx.conf file - /etc/nginx/nginx.conf"
+echo ""
 
 
 # openssl key gen
 SSL_DIR="/etc/ssl/certs"
-entrypoint_log "$ME: set openssl key gen : /ssl/certs/"
+entrypoint_log "$ME: set openssl key gen - /ssl/certs/ 🔍 "
 openssl genrsa -out $SSL_DIR/private-key.pem 3072
-echo "openssl: rsa key gen : done"
+check_error "openssl: rsa key gen - openssl genrsa -out $SSL_DIR/private-key.pem 3072"
 openssl rsa -in $SSL_DIR/private-key.pem -pubout -out $SSL_DIR/public-key.pem
-echo "openssl: public key gen : done"
+check_error "openssl: public key gen - openssl rsa -in $SSL_DIR/private-key.pem -pubout -out $SSL_DIR/public-key.pem"
 openssl req -new -x509 -key $SSL_DIR/private-key.pem -out $SSL_DIR/cert.pem -days 360 -subj $CERTS_
-echo "openssl: self-signed cert gen : done"
-entrypoint_log "$ME: set openssl key gen : Done"
-
+check_error "openssl: self-signed cert gen - openssl req -new -x509 -key $SSL_DIR/private-key.pem -out $SSL_DIR/cert.pem -days 360 -subj $CERTS_"
+entrypoint_log "$ME: set openssl key gen : complete ✅ "
+echo ""
 
 
 
 # set nginx.conf file
-entrypoint_log "$ME: set nginx default.conf file : /etc/nginx/http.d/deafault.conf"
+entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
 cat > /etc/nginx/http.d/default.conf << EOF
 server {
 
@@ -73,6 +83,10 @@ server {
 
 }
 EOF
-entrypoint_log "$ME: set nginx default.conf file : Done"
+check_error "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf"
+echo ""
+
+entrypoint_log "$ME: configuration step is all done ✨ "
+echo ""
 
 exit 0
