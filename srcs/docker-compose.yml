@@ -2,29 +2,44 @@
 version : "3.8"
 
 services:
+# mariadb service
+  db:
+    container_name: db
+    build:
+      context: requirements/mariadb
+    env_file: .env
+    stop_signal: SIGINT
+    volumes:
+      - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - backend
+    restart: always
+    # healthcheck:
+    #   test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
+    #   interval: 10s
+    #   timeout: 2s
+    #   retries: 100
 
-# # mariadb service
-#   db:
-#     container_name: mariadb
-#     build:
-#       context: requirements/mariadb
-#       args:
-#         - MARIADB_ROOT_PASSWORD
-#         - MARIADB_DATABASE
-#         - MARIADB_USER
-#         - MARIADB_PASSWORD
-#     # volumes:
-#     #   - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
-#     expose:
-#       - "3306"
-#     networks:
-#       - backend
-#     restart: always
-#     healthcheck:
-#       test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
-#       interval: 10s
-#       timeout: 2s
-#       retries: 100
+# wordpress service
+  # wordpress:
+  #   container_name: wordpress
+  #   build:
+  #     context: requirements/wordpress
+  #   command: []
+  #   env_file:
+  #     - .env
+  #   # volumes:
+  #   #   - ${INCEPTION_PATH}/wordpress:/var/www/html
+  #   expose:
+  #     - "80"
+  #   networks:
+  #     - backend
+  #     - frontend
+  #   restart: always
+  #   depends_on:
+  #     - db
 
 # nginx service
   nginx:
@@ -32,12 +47,10 @@ services:
     build:
       context: requirements/nginx
     command: [nginx, '-g', 'daemon off;']
-    env_file:
-      - .env
-    # depends_on:
-    #  db:
-      #  condition: service_healthy
+    env_file: .env
     stop_signal: SIGINT
+    volumes:
+      - ${INCEPTION_PATH}/wordpress:/var/www
     ports:
       - "443:443"
     expose:
@@ -45,11 +58,20 @@ services:
     networks:
       - frontend
     restart: always
-    #volumes:
-    #  - ${INCEPTION_PATH}/mariadb:/etc/nginx/www:ro
+    # depends_on:
+    #  wordpress:
+      #  condition: service_healthy
 
 networks:
   frontend:
     driver: bridge
   backend:
     driver: bridge
+
+# volumes:
+#   wordpress_volume:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: ${INCEPTION_PATH}/wordpress

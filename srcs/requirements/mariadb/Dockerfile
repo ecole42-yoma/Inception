@@ -9,22 +9,23 @@ RUN set -x && \
     mkdir -p /docker-entrypoint.d && \
 	rm -rf /var/cache/apk/*
 
-ARG	MARIADB_ROOT_PASSWORD=PASS
-ARG	MARIADB_DATABASE=DATA
-ARG MARIADB_USER=USER
-ARG	MARIADB_PASSWORD=PASS
-
-#COPY healthcheck.sh /usr/local/bin/healthcheck.sh
-
 COPY tools/docker-entrypoint.sh /
-COPY conf/healthcheck.sh /docker-entrypoint.d
+COPY conf/configuration.sh /docker-entrypoint.d
+
+# ENV MYSQL_ROOT_PASSWORD=password
+# ENV MYSQL_DATABASE=mariadb
+# ENV MYSQL_USER=yongmkim
+# ENV MYSQL_PASSWORD=password
 
 RUN set -x && \
-	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/healthcheck.sh
+	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 3306
 
-CMD ["mysqld"]
+STOPSIGNAL SIGQUIT
 
+CMD ["mariadbd", "--user=mysql"]
+
+# ./etc/my.cnf.d/mariadb-server.cnf

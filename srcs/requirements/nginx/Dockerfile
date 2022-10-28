@@ -12,8 +12,8 @@ COPY conf/configuration.sh /docker-entrypoint.d
 
 RUN set -x && \
     chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh
-# ENV DOMAIN_NAME=yongmkim.42.fr
-# ENV CERTS_=/CN=yongmkim.42.fr/
+ENV DOMAIN_NAME=yongmkim.42.fr
+ENV CERTS_=/CN=yongmkim.42.fr/
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

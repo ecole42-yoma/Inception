@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/28 18:15:37 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/28 23:06:51 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ $(NAME)	:
 # preprocess
 
 make_dir:
-	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/nginx $(PATH_DATA)/tools
+	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/tools
 
 
 .PHONY	:	clean down
@@ -72,7 +72,7 @@ start	:
 unpause	:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) unpause
 
-.PHONY	:	top ps ls info show log
+.PHONY	:	top ps ls info show log logs
 top		:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) top
 
@@ -91,10 +91,9 @@ show	:
 
 info	:
 	$(SUDO) docker info
-
-log		:
+log		:	logs
+logs	:
 	@cd srcs && $(SUDO) docker compose logs
-
 
 .PHONY	:	command c com
 c		:	command
