@@ -58,11 +58,27 @@ EOF
 check_error "$ME: edit /etc/my.cnf.d/mariadb-server.cnf"
 
 
-
+# check alraedy database exist other wise create new database and setting up user
 entrypoint_log "$ME: mysql_install_db 🔍 "
 mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 check_error "$ME: mysql_install_db"
-echo ""
+
+
+# entrypoint_log "$ME: database default setting 🔍 "
+# mysql -u root << EOF
+
+# ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+# FLUSH PRIVILEGES;
+# DELETE FROM mysql.user WHERE User='';
+# DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+# DROP DATABASE IF EXISTS test;
+# CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
+# GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+# FLUSH PRIVILEGES;
+# EOF
+# check_error "$ME: database default setting"
+
+
 
 entrypoint_log "$ME: configuration step is all done ✨ "
 echo ""

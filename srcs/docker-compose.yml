@@ -10,17 +10,18 @@ services:
     env_file: .env
     stop_signal: SIGINT
     volumes:
-      - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
+      - ${INCEPTION_PATH}/db:/var/lib/mysql
     expose:
       - "3306"
     networks:
       - backend
     restart: always
-    # healthcheck:
+    healthcheck:
     #   test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
-    #   interval: 10s
-    #   timeout: 2s
-    #   retries: 100
+      test: ['CMD-SHELL', 'mysqladmin ping -h localhost']
+      interval: 10s
+      timeout: 2s
+      retries: 100
 
 # wordpress service
   # wordpress:

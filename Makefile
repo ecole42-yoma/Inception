@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/28 23:19:34 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/29 00:54:30 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ $(NAME)	:
 # preprocess
 
 make_dir:
-	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/tools
+	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/db $(PATH_DATA)/bonus $(PATH_DATA)/tools
 
 
 .PHONY	:	clean down
