@@ -6,21 +6,22 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/27 18:51:43 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/28 14:33:47 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	Inception
 
-PATH_DATA	=	~/projects/goinfre/$(USER)/data
 DOCKER_COMPOSE	=	./srcs/docker-compose.yml
 PATH_DOCKER_COMPOSE	=	./srcs
 
 # check cluser env or vm env
 ifeq ($(WHERE), cluster)
 	SUDO	=
+	PATH_DATA	=	~/project/goinfre/$(USER)/data
 else
 	SUDO	=	@sudo
+	PATH_DATA	=	/home/$(USER)/data
 endif
 
 .PHONY	:	all	up	docker_install $(NAME)
@@ -37,7 +38,7 @@ $(NAME)	:
 # preprocess
 
 make_dir:
-	$(SUDO) @mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/nginx $(PATH_DATA)/tools
+	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/mariadb $(PATH_DATA)/bonus $(PATH_DATA)/nginx $(PATH_DATA)/tools
 
 
 .PHONY	:	clean down
