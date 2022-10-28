@@ -86,6 +86,12 @@ EOF
 check_error "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf"
 echo ""
 
+
+entrypoint_log "$ME: set dns setting - /etc/hosts 🔍 "
+echo "127.0.0.1	$DOMAIN_NAME" >> /etc/hosts
+check_error "$ME: set dns setting - /etc/hosts"
+
+
 entrypoint_log "$ME: configuration step is all done ✨ "
 echo ""
 

@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/29 02:57:56 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/29 03:24:45 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ PATH_DOCKER_COMPOSE	=	./srcs
 # check cluser env or vm env
 ifeq ($(WHERE), cluster)
 	SUDO	=
-	PATH_DATA	=	~/project/goinfre/$(USER)/data
+	PATH_DATA	=	~/project/goinfre/yongmkim/data
 else
 	SUDO	=	@sudo
 	PATH_DATA	=	/home/$(USER)/data

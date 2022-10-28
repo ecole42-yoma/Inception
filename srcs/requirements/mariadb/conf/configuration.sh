@@ -68,8 +68,7 @@ check_error "$ME: mysql_install_db"
 
 
 # entrypoint_log "$ME: database default setting 🔍 "
-# mysql -u root << EOF
-
+# mysqld --user=mysql --datadir=/var/lib/mysql --bootstrap << EOF
 # ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
 # FLUSH PRIVILEGES;
 # DELETE FROM mysql.user WHERE User='';
