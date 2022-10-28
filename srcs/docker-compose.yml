@@ -8,11 +8,11 @@ services:
 #     container_name: mariadb
 #     build:
 #       context: requirements/mariadb
-#     environment:
-#       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-#       MARIADB_DATABASE: ${DB_DATABASE}
-#       MARIADB_USER: ${DB_USER}
-#       MARIADB_PASSWORD: ${DB_PASSWORD}
+#       args:
+#         - MARIADB_ROOT_PASSWORD
+#         - MARIADB_DATABASE
+#         - MARIADB_USER
+#         - MARIADB_PASSWORD
 #     # volumes:
 #     #   - ${INCEPTION_PATH}/mariadb:/var/lib/mysql
 #     expose:
@@ -21,7 +21,7 @@ services:
 #       - backend
 #     restart: always
 #     healthcheck:
-#       test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MARIADB_ROOT_PASSWORD']
+#       test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
 #       interval: 10s
 #       timeout: 2s
 #       retries: 100
@@ -32,8 +32,8 @@ services:
     build:
       context: requirements/nginx
     command: [nginx, '-g', 'daemon off;']
-    #environment:
-
+    env_file:
+      - .env
     # depends_on:
     #  db:
       #  condition: service_healthy
@@ -46,8 +46,7 @@ services:
       - frontend
     restart: always
     #volumes:
-    #  - ${INCEPTION_PATH}/nginx:/etc/nginx/conf.d:ro
-    #  - ${INCEPTION_PATH}/mariadb:/var/www/http:ro
+    #  - ${INCEPTION_PATH}/mariadb:/etc/nginx/www:ro
 
 networks:
   frontend:

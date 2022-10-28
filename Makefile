@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/28 14:33:47 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/28 18:15:37 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ start	:
 unpause	:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) unpause
 
-.PHONY	:	top ps ls info show
+.PHONY	:	top ps ls info show log
 top		:
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) top
 
@@ -92,6 +92,9 @@ show	:
 info	:
 	$(SUDO) docker info
 
+log		:
+	@cd srcs && $(SUDO) docker compose logs
+
 
 .PHONY	:	command c com
 c		:	command
@@ -106,7 +109,9 @@ command	:
 	@echo "exec : exec c='container name'"
 	@echo "curl : curl p='port number'"
 
-.PHONY	:	exec curl
+.PHONY	:	exec curl enter into
+into	:	exec
+enter	:	exec
 exec	:
 	$(SUDO) docker exec -it $(c) /bin/sh
 
