@@ -23,25 +23,6 @@ check_error() {
 
 
 
-
-# entrypoint_log "$ME: re-create /var/lib/mysql && ensure /var/run/mysqld 🔍 "
-# # purge and re-create /var/lib/mysql with appropriate ownership
-# # rm -rf /var/lib/mysql
-# mkdir -p /var/lib/mysql /var/run/mysqld
-# check_error "mkdir -p /var/lib/mysql /var/run/mysqld"
-
-# chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
-# check_error "chown -R mysql:mysql /var/lib/mysql /var/run/mysqld"
-
-# # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
-# chmod 777 /var/run/mysqld
-# check_error "chmod 777 /var/run/mysqld"
-
-# entrypoint_log "$ME: re-create /var/lib/mysql && ensure /var/run/mysqld : complete ✅ "
-# echo ""
-
-
-
 entrypoint_log "$ME: edit /etc/my.cnf.d/mariadb-server.cnf 🔍 "
 sed -i "8d" /etc/my.cnf.d/mariadb-server.cnf
 sed -i "8d" /etc/my.cnf.d/mariadb-server.cnf
@@ -67,18 +48,22 @@ mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --auth-root-authenticat
 check_error "$ME: mysql_install_db"
 
 
+
+
 # entrypoint_log "$ME: database default setting 🔍 "
-# mysqld --user=mysql --datadir=/var/lib/mysql --bootstrap << EOF
-# ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-# FLUSH PRIVILEGES;
-# DELETE FROM mysql.user WHERE User='';
-# DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-# DROP DATABASE IF EXISTS test;
-# CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
-# GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION;
-# FLUSH PRIVILEGES;
-# EOF
-# check_error "$ME: database default setting"
+# {
+#     echo "FLUSH PRIVILEGES;"
+#     echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
+#     echo "DELETE FROM mysql.user WHERE User='';"
+#     echo "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+#     echo "DROP DATABASE IF EXISTS test;"
+#     echo "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
+#     echo "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION;"
+#     echo "FLUSH PRIVILEGES;"
+# } | mysqld --user=mysql --datadir=/var/lib/mysql --bootstrap
+# # kill mysqld
+# # check_error "$ME: database default setting"
+# entrypoint_log "$ME: database default setting"
 
 
 

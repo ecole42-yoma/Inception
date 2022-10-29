@@ -3,7 +3,7 @@ version : "3.8"
 
 services:
 # mariadb service
-  db:
+  mariadb:
     container_name: db
     build:
       context: requirements/mariadb
@@ -11,6 +11,7 @@ services:
     stop_signal: SIGINT
     volumes:
       - ${INCEPTION_PATH}/db:/var/lib/mysql
+      # - db_volume:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -52,6 +53,7 @@ services:
     stop_signal: SIGINT
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www
+      # - wordpress_volume:/var/www
     ports:
       - "443:443"
     expose:
@@ -76,3 +78,10 @@ networks:
 #       type: none
 #       o: bind
 #       device: ${INCEPTION_PATH}/wordpress
+
+#   db_volume:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: ${INCEPTION_PATH}/db
