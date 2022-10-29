@@ -57,6 +57,8 @@ services:
       - "443:443"
     expose:
       - "9000"
+    hostname:
+    domainname:
     networks:
       - frontend
     restart: always
