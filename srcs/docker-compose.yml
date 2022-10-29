@@ -10,9 +10,6 @@ services:
       context: requirements/mariadb
     env_file: .env
     stop_signal: SIGINT
-    volumes:
-      # - ${INCEPTION_PATH}/db:/var/lib/mysql
-      - db_volume:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -23,6 +20,9 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+    volumes:
+      - ${INCEPTION_PATH}/db:/var/lib/mysql
+      # - db_volume:/var/lib/mysql
 
 #wordpress service
   # wordpress:
@@ -32,8 +32,6 @@ services:
   #   command: []
   #   env_file:
   #     - .env
-  #   # volumes:
-  #     # - ${INCEPTION_PATH}/wordpress:/var/www/html
   #   expose:
   #     - "3306"
   #     - "9000"
@@ -44,6 +42,8 @@ services:
   #   depends_on:
   #     mariadb:
   #       condition: service_healthy
+  #   # volumes:
+  #     # - ${INCEPTION_PATH}/wordpress:/var/www/html
 
 # nginx service
   nginx:
@@ -53,9 +53,6 @@ services:
     command: [nginx, '-g', 'daemon off;']
     env_file: .env
     stop_signal: SIGINT
-    volumes:
-      - ${INCEPTION_PATH}/wordpress:/var/www
-      # - wordpress_volume:/var/www
     ports:
       - "443:443"
     expose:
@@ -66,6 +63,9 @@ services:
     # depends_on:
     #  wordpress:
       #  condition: service_healthy
+    volumes:
+      - ${INCEPTION_PATH}/wordpress:/var/www
+      # - wordpress_volume:/var/www
 
 networks:
   frontend:
@@ -73,7 +73,7 @@ networks:
   backend:
     driver: bridge
 
-volumes:
+# volumes:
 #   wordpress_volume:
 #     driver: local
 #     driver_opts:
@@ -81,9 +81,9 @@ volumes:
 #       o: bind
 #       device: ${INCEPTION_PATH}/wordpress
 
-  db_volume:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${INCEPTION_PATH}/db
+#   db_volume:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: ${INCEPTION_PATH}/db
