@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/29 18:08:15 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/29 20:32:29 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,14 @@ else
 	PATH_DATA	=	/home/$(USER)/data
 endif
 
-.PHONY	:	all	up	docker_install $(NAME)
+.PHONY	:	all	up	docker_install $(NAME) build
+
 up		:	all
 all		:	$(NAME) make_dir
 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
+
+build	: make_dir
+	$(SUDO) docker compose -f $(DOCKER_COMPOSE) -p $(NAME) build
 
 #docker_install:
 # find docker and docker-compose if not install it

@@ -1,5 +1,6 @@
 # nginx
-FROM alpine:3.16.2
+# stable version for legacy
+FROM alpine:3.14
 
 ENV DOMAIN_NAME=yongmkim.42.fr
 ENV CERTS_=/CN=yongmkim.42.fr/
