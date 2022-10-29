@@ -4,7 +4,7 @@ FROM alpine:3.14
 
 RUN set -e && \
 	#build wordperss container
-	apk add --no cache \
+	apk add --no-cache \
 		php8-common \
 		php8-pdo_sqlite \
 		php8-pear \
