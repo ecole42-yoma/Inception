@@ -11,8 +11,8 @@ services:
     env_file: .env
     stop_signal: SIGINT
     volumes:
-      - ${INCEPTION_PATH}/db:/var/lib/mysql
-      # - db_volume:/var/lib/mysql
+      # - ${INCEPTION_PATH}/db:/var/lib/mysql
+      - db_volume:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -25,25 +25,25 @@ services:
       retries: 10
 
 #wordpress service
-  wordpress:
-    container_name: wordpress
-    build:
-      context: requirements/wordpress
-    command: []
-    env_file:
-      - .env
-    # volumes:
-      # - ${INCEPTION_PATH}/wordpress:/var/www/html
-    expose:
-      - "3306"
-      - "9000"
-    networks:
-      - backend
-      - frontend
-    restart: always
-    depends_on:
-      mariadb:
-        condition: service_healthy
+  # wordpress:
+  #   container_name: wordpress
+  #   build:
+  #     context: requirements/wordpress
+  #   command: []
+  #   env_file:
+  #     - .env
+  #   # volumes:
+  #     # - ${INCEPTION_PATH}/wordpress:/var/www/html
+  #   expose:
+  #     - "3306"
+  #     - "9000"
+  #   networks:
+  #     - backend
+  #     - frontend
+  #   restart: always
+  #   depends_on:
+  #     mariadb:
+  #       condition: service_healthy
 
 # nginx service
   nginx:
@@ -73,7 +73,7 @@ networks:
   backend:
     driver: bridge
 
-# volumes:
+volumes:
 #   wordpress_volume:
 #     driver: local
 #     driver_opts:
@@ -81,9 +81,9 @@ networks:
 #       o: bind
 #       device: ${INCEPTION_PATH}/wordpress
 
-#   db_volume:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${INCEPTION_PATH}/db
+  db_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${INCEPTION_PATH}/db
