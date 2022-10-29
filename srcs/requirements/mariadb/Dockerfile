@@ -19,24 +19,15 @@ RUN set -x && \
 	rm -rf /var/cache/apk/* && \
 	mkdir -p /var/lib/mysql /var/run/mysqld
 
-# RUN set -x && \
-# 	purge and re-create /var/lib/mysql with appropriate ownership and init db
-# 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
-# 	chmod 777 /var/run/mysqld
-# 	mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --auth-root-authentication-method=normal
-
-
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 
 RUN set -x && \
 	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh && \
-	# /docker-entrypoint.sh && \
 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
 	chmod 777 /var/run/mysqld
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-# ENTRYPOINT ["mysqld", "--user=mysql", "--datadir=/var/lib/mysql", "--basedir=/usr"]
 
 EXPOSE 3306
 

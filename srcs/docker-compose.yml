@@ -2,6 +2,7 @@
 version : "3.8"
 
 services:
+
 # mariadb service
   mariadb:
     container_name: db
@@ -21,26 +22,28 @@ services:
       test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
       interval: 10s
       timeout: 2s
-      retries: 100
+      retries: 10
 
-# wordpress service
-  # wordpress:
-  #   container_name: wordpress
-  #   build:
-  #     context: requirements/wordpress
-  #   command: []
-  #   env_file:
-  #     - .env
-  #   # volumes:
-  #   #   - ${INCEPTION_PATH}/wordpress:/var/www/html
-  #   expose:
-  #     - "80"
-  #   networks:
-  #     - backend
-  #     - frontend
-  #   restart: always
-  #   depends_on:
-  #     - db
+#wordpress service
+  wordpress:
+    container_name: wordpress
+    build:
+      context: requirements/wordpress
+    command: []
+    env_file:
+      - .env
+    # volumes:
+      # - ${INCEPTION_PATH}/wordpress:/var/www/html
+    expose:
+      - "3306"
+      - "9000"
+    networks:
+      - backend
+      - frontend
+    restart: always
+    depends_on:
+      mariadb:
+        condition: service_healthy
 
 # nginx service
   nginx:

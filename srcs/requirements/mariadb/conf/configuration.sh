@@ -31,6 +31,7 @@ then
     entrypoint_log "$ME: initializes the database directory : mariadb-install-db : Already installed"
     exit 0
 else
+    # check secure installation later
     # mysql_secure_installation
 
     mariadb-install-db \
@@ -70,7 +71,7 @@ fi
 
 
 
-
+# set config file
 entrypoint_log "$ME: edit /etc/my.cnf.d/mariadb-server.cnf 🔍 "
 sed -i "8d" /etc/my.cnf.d/mariadb-server.cnf
 sed -i "8d" /etc/my.cnf.d/mariadb-server.cnf
@@ -85,16 +86,6 @@ basedir='/usr'
 user=mysql
 EOF
 check_error "$ME: edit /etc/my.cnf.d/mariadb-server.cnf"
-
-
-
-
-
-# check alraedy database exist other wise create new database and setting up user
-# entrypoint_log "$ME: mysql_install_db 🔍 "
-# mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --auth-root-authentication-method=normal
-# check_error "$ME: mysql_install_db"
-
 
 
 
