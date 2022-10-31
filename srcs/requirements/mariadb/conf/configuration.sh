@@ -95,8 +95,8 @@ else
         --enforce-storage-engine= \
         --loose-innodb_buffer_pool_load_at_startup=0 \
         --loose-innodb_buffer_pool_dump_at_shutdown=0 \
-        --basedir=/usr \
-        --datadir=/var/lib/mysql
+        --datadir=/var/lib/mysql \
+        --basedir=/usr
     # mariadb-install-db --user=mysql --datadir=/var/lib/mysql
     check_error "$ME: initializes the database directory : mariadb-install-db"
 fi

@@ -17,34 +17,40 @@ services:
     restart: always
     healthcheck:
       test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
-      interval: 10s
+      interval: 1s
       timeout: 2s
-      retries: 10
+      retries: 42
     volumes:
-      # - ${INCEPTION_PATH}/db:/var/lib/mysql
-      - db_volume:/var/lib/mysql
+      - ${INCEPTION_PATH}/db:/var/lib/mysql
+      # - db_volume:/var/lib/mysql
 
 #wordpress service
-  # wordpress:
-  #   container_name: wordpress
-  #   build:
-  #     context: requirements/wordpress
-  #   command: [php-fpm8, "-F"]
-  #   env_file:
-  #     - .env
-  #   stop_signal: SIGINT
-  #   expose:
-  #     - "3306"
-  #     - "9000"
-  #   networks:
-  #     - backend
-  #     - frontend
-  #   restart: always
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
-    # volumes:
-      # - ${INCEPTION_PATH}/wordpress:/var/www/html
+  wordpress:
+    container_name: wordpress
+    build:
+      context: requirements/wordpress
+    command: [php-fpm8, "-F"]
+    env_file:
+      - .env
+    stop_signal: SIGINT
+    expose:
+      - "3306"
+      - "9000"
+    networks:
+      - backend
+      - frontend
+    restart: always
+    healthcheck:
+      test: ['CMD', 'nc', '-z', 'localhost', '9000']
+      interval: 1s
+      timeout: 2s
+      retries: 42
+    depends_on:
+      mariadb:
+        condition: service_healthy
+#     volumes:
+#       # - ${INCEPTION_PATH}/wordpress:/var/www/html
+#       - wordpress_volume:/var/www/html
 
 # nginx service
   nginx:
@@ -63,12 +69,13 @@ services:
     networks:
       - frontend
     restart: always
-    # depends_on:
-    #  wordpress:
-      #  condition: service_healthy
+    depends_on:
+      wordpress:
+        condition: service_healthy
     volumes:
-      # - ${INCEPTION_PATH}/wordpress:/var/www
-      - wordpress_volume:/var/www
+      - ${INCEPTION_PATH}/wordpress:/var/www
+      # - wordpress_volume:/var/www
+      # - db_volume:/var/lib/mysql
 
 networks:
   frontend:
@@ -76,17 +83,17 @@ networks:
   backend:
     driver: bridge
 
-volumes:
-  wordpress_volume:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${INCEPTION_PATH}/wordpress
+# volumes:
+#   wordpress_volume:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: ${INCEPTION_PATH}/wordpress
 
-  db_volume:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${INCEPTION_PATH}/db
+#   db_volume:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: ${INCEPTION_PATH}/db

@@ -46,7 +46,7 @@ check_error() {
 
 # set nginx.conf file
 entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
-cat > /etc/nginx/http.d/default.conf << EOF
+cat > /etc/nginx/http.d/default.conf << ''EOF
 server {
 
 	listen				443 default_server ssl;
@@ -57,21 +57,22 @@ server {
 	error_log 			/var/log/nginx/error_log;
 	access_log 			/var/log/nginx/access_log;
 
-	location / {
-		root /var/lib/nginx/html;
-		index index.html index.php index.htm;
-	}
+	root /var/lib/nginx/html;
 
-	# location ~ \.php$ {
-	#   try_files $uri =404;
-	# 	include							fastcgi_params;
-	# 	fastcgi_split_path_info			^(.+\.php)(/.+)$;
-	# 	fastcgi_pass					wordpress:9000;
-	# 	fastcgi_index					index.php;
-	# 	fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-	# 	fastcgi_param SCRIPT_NAME $fastcgi_script_name;
-	# 	fastcgi_param PATH_INFO $fastcgi_path_info;
+	# location / {
+	# 	index index.html index.php index.htm;
 	# }
+
+	location ~ \.php$ {
+		try_files $uri = 404;
+		include							fastcgi_params;
+		fastcgi_split_path_info			^(.+\.php)(/.+)$;
+		fastcgi_pass					wordpress:9000;
+		fastcgi_index					index.php;
+		fastcgi_param SCRIPT_FILENAME	$document_root$fastcgi_script_name;
+		fastcgi_param SCRIPT_NAME		$fastcgi_script_name;
+		fastcgi_param PATH_INFO			$fastcgi_path_info;
+	}
 
 	# location /404/ {
 	# 	return 404;

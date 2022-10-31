@@ -17,7 +17,7 @@ ENV WORDPRESS_DB_PASSWORD=password
 RUN apk add --no-cache bash curl less vim nginx ca-certificates git tzdata zip \
     libmcrypt-dev zlib-dev gmp-dev \
     freetype-dev libjpeg-turbo-dev libpng-dev \
-    php8-fpm php8-json php8-zlib php8-xml php8-xmlwriter php8-simplexml php8-pdo php8-phar php8-openssl \
+    php8 php8-fpm php8-json php8-zlib php8-xml php8-xmlwriter php8-simplexml php8-pdo php8-phar php8-openssl \
     php8-pdo_mysql php8-mysqli php8-session \
     php8-gd php8-iconv php8-gmp php8-zip \
     php8-curl php8-opcache php8-ctype \
@@ -43,8 +43,9 @@ RUN set -e && \
 	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh && \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \
-	mv wp-cli.phar /usr/bin/wp-cli
-	# chown www-data:www-data /usr/bin/wp-cli
+	mv wp-cli.phar /usr/bin/wp-cli && \
+	chown nobody:nobody /usr/bin/wp-cli && \
+	chown root:root /usr/bin/wp-cli
 
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -23,8 +23,13 @@ RUN set -x && \
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 
+
 RUN set -x && \
 	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh && \
+	/docker-entrypoint.d/configuration.sh
+
+
+RUN set -x && \
 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
 	chmod 777 /var/run/mysqld
 

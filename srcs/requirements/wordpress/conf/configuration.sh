@@ -24,9 +24,7 @@ check_error() {
 }
 
 
-
-
-
+sed -i "/listen = /c\listen = 0.0.0.0:9000" /etc/php8/php-fpm.d/www.conf
 entrypoint_log "$ME: create directory : /usr/html 🔍 "
 if [ ! -d /usr/html ] ; then
 	echo "[i] Creating directories..."
