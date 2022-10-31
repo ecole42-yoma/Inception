@@ -22,55 +22,6 @@ check_error() {
 }
 
 
-
-
-# initializes the database directory
-entrypoint_log "$ME: initializes the database directory : mariadb-install-db 🔍 "
-if [ -e "/var/lib/mysql/mysql/user.frm" ]
-then
-    entrypoint_log "$ME: initializes the database directory : mariadb-install-db : Already installed"
-    exit 0
-else
-    # check secure installation later
-    # mysql_secure_installation
-
-    mariadb-install-db \
-        --user=mysql \
-        --skip-test-db \
-        --default-time-zone=SYSTEM \
-        --enforce-storage-engine= \
-        --loose-innodb_buffer_pool_load_at_startup=0 \
-        --loose-innodb_buffer_pool_dump_at_shutdown=0 \
-        --basedir=/usr \
-        --datadir=/var/lib/mysql
-    # mariadb-install-db --user=mysql --datadir=/var/lib/mysql
-    check_error "$ME: initializes the database directory : mariadb-install-db"
-fi
-
-
-
-
-# # Do a temporary startup of the MariaDB server, for init purposes
-# entrypoint_log "$ME: Do a temporary startup of the MariaDB server, for init purposes 🔍 "
-# mysqld --skip-networking \
-#     --loose-innodb_buffer_pool_load_at_startup=0 &
-
-# MARIADB_PID=$!
-# if [ MARIADB_PID -lt 0 ]; then
-#     check_error "$ME: Unable to start temp server."
-# else
-#     sleep 10;
-#     if [ MARIADB_PID -ne 0 ]
-#     then
-#         kill "$MARIADB_PID"
-#     fi
-# fi
-
-# check_error "$ME: Do a temporary startup of the MariaDB server, for init purposes"
-
-
-
-
 # set config file
 entrypoint_log "$ME: edit /etc/my.cnf.d/mariadb-server.cnf 🔍 "
 cat > /etc/my.cnf.d/mariadb-server.cnf << EOF
@@ -121,6 +72,60 @@ user=mysql
 [mariadb-10.5]
 EOF
 check_error "$ME: edit /etc/my.cnf.d/mariadb-server.cnf"
+
+
+
+
+
+
+# initializes the database directory
+entrypoint_log "$ME: initializes the database directory : mariadb-install-db 🔍 "
+if [ -e "/var/lib/mysql/mysql/user.frm" ]
+then
+    entrypoint_log "$ME: initializes the database directory : mariadb-install-db : Already installed"
+    exit 0
+else
+    # check secure installation later
+    # mysql_secure_installation
+
+    mariadb-install-db \
+        --user=mysql \
+        --skip-test-db \
+        --default-time-zone=SYSTEM \
+        --enforce-storage-engine= \
+        --loose-innodb_buffer_pool_load_at_startup=0 \
+        --loose-innodb_buffer_pool_dump_at_shutdown=0 \
+        --basedir=/usr \
+        --datadir=/var/lib/mysql
+    # mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+    check_error "$ME: initializes the database directory : mariadb-install-db"
+fi
+
+
+
+
+
+
+# # Do a temporary startup of the MariaDB server, for init purposes
+# entrypoint_log "$ME: Do a temporary startup of the MariaDB server, for init purposes 🔍 "
+# mysqld --skip-networking \
+#     --loose-innodb_buffer_pool_load_at_startup=0 &
+
+# MARIADB_PID=$!
+# if [ MARIADB_PID -lt 0 ]; then
+#     check_error "$ME: Unable to start temp server."
+# else
+#     sleep 10;
+#     if [ MARIADB_PID -ne 0 ]
+#     then
+#         kill "$MARIADB_PID"
+#     fi
+# fi
+
+# check_error "$ME: Do a temporary startup of the MariaDB server, for init purposes"
+
+
+
 
 
 

@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/30 03:13:58 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/10/31 15:57:50 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,8 +38,13 @@ down	:;						$(SUDO) docker compose -f $(DOCKER_COMPOSE) down
 
 .PHONY	:	fclean
 fclean	:	clean
-	$(SUDO) rm -rf $(PATH_DATA)
 	$(SUDO) docker system prune -af --volumes
+
+.PHONY	:	db_flush db_clean db
+db_flush:	db_clean
+db		:	db_clean
+db_clean:
+	$(SUDO) rm -rf $(PATH_DATA)
 
 .PHONY	:	re
 re		:

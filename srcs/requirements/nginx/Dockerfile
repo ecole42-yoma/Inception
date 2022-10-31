@@ -10,6 +10,8 @@ RUN set -x && \
         nginx \
         openssl && \
     mkdir -p /docker-entrypoint.d /etc/nginx/www && \
+    touch /var/lib/nginx/blocked.log && \
+    chmod 777 /var/lib/nginx/blocked.log && \
     # delete TLSv1.1
     sed -i "s/ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3/ssl_protocols TLSv1.2 TLSv1.3/g" /etc/nginx/nginx.conf && \
     # openssl key gen
