@@ -21,15 +21,15 @@ services:
       timeout: 2s
       retries: 10
     volumes:
-      - ${INCEPTION_PATH}/db:/var/lib/mysql
-      # - db_volume:/var/lib/mysql
+      # - ${INCEPTION_PATH}/db:/var/lib/mysql
+      - db_volume:/var/lib/mysql
 
 #wordpress service
   # wordpress:
   #   container_name: wordpress
   #   build:
   #     context: requirements/wordpress
-  #   command: []
+  #   command: [php-fpm8, "-F"]
   #   env_file:
   #     - .env
   #   stop_signal: SIGINT
@@ -43,8 +43,8 @@ services:
   #   depends_on:
   #     mariadb:
   #       condition: service_healthy
-  #   # volumes:
-  #     # - ${INCEPTION_PATH}/wordpress:/var/www/html
+    # volumes:
+      # - ${INCEPTION_PATH}/wordpress:/var/www/html
 
 # nginx service
   nginx:
@@ -67,8 +67,8 @@ services:
     #  wordpress:
       #  condition: service_healthy
     volumes:
-      - ${INCEPTION_PATH}/wordpress:/var/www
-      # - wordpress_volume:/var/www
+      # - ${INCEPTION_PATH}/wordpress:/var/www
+      - wordpress_volume:/var/www
 
 networks:
   frontend:
@@ -76,17 +76,17 @@ networks:
   backend:
     driver: bridge
 
-# volumes:
-#   wordpress_volume:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${INCEPTION_PATH}/wordpress
+volumes:
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${INCEPTION_PATH}/wordpress
 
-#   db_volume:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${INCEPTION_PATH}/db
+  db_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${INCEPTION_PATH}/db

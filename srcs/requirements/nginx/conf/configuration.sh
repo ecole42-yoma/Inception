@@ -55,6 +55,7 @@ server {
 	ssl_certificate_key	/etc/ssl/certs/private-key.pem;
 	server_name			$DOMAIN_NAME www.$DOMAIN_NAME;
 	error_log 			/var/log/nginx/error_log;
+	access_log 			/var/log/nginx/access_log;
 
 	location / {
 		root /var/lib/nginx/html;

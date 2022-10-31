@@ -17,7 +17,8 @@ RUN set -x && \
 		mariadb-client && \
     mkdir -p /docker-entrypoint.d && \
 	rm -rf /var/cache/apk/* && \
-	mkdir -p /var/lib/mysql /var/run/mysqld
+	mkdir -p /var/run/mysqld
+	# mkdir -p /var/lib/mysql /var/run/mysqld
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d

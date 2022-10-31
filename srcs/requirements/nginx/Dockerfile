@@ -31,4 +31,6 @@ EXPOSE 9000
 
 STOPSIGNAL SIGQUIT
 
+VOLUME ["/var/www"]
+
 CMD ["nginx", "-g", "daemon off;"]
