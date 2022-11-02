@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/10/31 18:08:43 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/02 14:37:55 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,24 +27,22 @@ endif
 .PHONY	:	all up  $(NAME) build make_dir
 up		:	all
 all		:	$(NAME) make_dir; 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
-build	: make_dir;				$(SUDO) docker compose -f $(DOCKER_COMPOSE) build
+build	:	make_dir;			$(SUDO) docker compose -f $(DOCKER_COMPOSE) build
 $(NAME)	:
 # preprocess
-make_dir:;	$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/db $(PATH_DATA)/bonus $(PATH_DATA)/tools
+make_dir:;						$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/db $(PATH_DATA)/bonus $(PATH_DATA)/tools
 
 .PHONY	:	clean down
 clean	:	down
 down	:;						$(SUDO) docker compose -f $(DOCKER_COMPOSE) down
 
 .PHONY	:	fclean
-fclean	:	clean
-	$(SUDO) docker system prune -af --volumes
+fclean	:	clean;				$(SUDO) docker system prune -af --volumes
 
 .PHONY	:	db_flush db_clean db
 db_flush:	db_clean
 db		:	db_clean
-db_clean:
-	$(SUDO) rm -rf $(PATH_DATA)
+db_clean:;						$(SUDO) rm -rf $(PATH_DATA)
 
 .PHONY	:	re
 re		:

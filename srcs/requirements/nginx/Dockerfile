@@ -5,6 +5,8 @@ FROM alpine:3.14
 ENV DOMAIN_NAME=yongmkim.42.fr
 ENV CERTS_=/CN=yongmkim.42.fr/
 
+STOPSIGNAL SIGINT
+
 RUN set -x && \
     apk add --no-cache \
         nginx \
@@ -26,11 +28,5 @@ RUN set -x && \
     chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-
-EXPOSE 9000
-
-STOPSIGNAL SIGQUIT
-
-VOLUME ["/var/www"]
 
 CMD ["nginx", "-g", "daemon off;"]

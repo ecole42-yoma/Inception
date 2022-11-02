@@ -8,18 +8,17 @@ services:
     container_name: db
     build:
       context: requirements/mariadb
-    env_file: .env
-    stop_signal: SIGINT
-    expose:
-      - "3306"
-    networks:
-      - backend
-    restart: always
     healthcheck:
       test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
       interval: 1s
       timeout: 2s
-      retries: 42
+      retries: 21
+    env_file: .env
+    networks:
+      backend:
+        aliases:
+          - ${BACK_NETWORK}
+    restart: always
     volumes:
       - ${INCEPTION_PATH}/db:/var/lib/mysql
       # - db_volume:/var/lib/mysql
@@ -29,27 +28,18 @@ services:
     container_name: wordpress
     build:
       context: requirements/wordpress
-    command: [php-fpm8, "-F"]
-    env_file:
-      - .env
-    stop_signal: SIGINT
-    expose:
-      - "3306"
-      - "9000"
+    env_file: .env
     networks:
-      - backend
-      - frontend
+      backend: {}
+      frontend:
+        aliases:
+          - ${FRONT_NETWORK}
     restart: always
-    healthcheck:
-      test: ['CMD', 'nc', '-z', 'localhost', '9000']
-      interval: 1s
-      timeout: 2s
-      retries: 42
     depends_on:
       mariadb:
         condition: service_healthy
-#     volumes:
-#       # - ${INCEPTION_PATH}/wordpress:/var/www/html
+    volumes:
+      - ${INCEPTION_PATH}/wordpress:/var/www/html
 #       - wordpress_volume:/var/www/html
 
 # nginx service
@@ -57,31 +47,26 @@ services:
     container_name: nginx
     build:
       context: requirements/nginx
-    command: [nginx, '-g', 'daemon off;']
     env_file: .env
-    stop_signal: SIGINT
     ports:
       - "443:443"
-    expose:
-      - "9000"
-    hostname: localhost
-    domainname: ${DOMAIN_NAME}
+    # hostname: localhost
+    # domainname: ${DOMAIN_NAME}
     networks:
-      - frontend
+      frontend:
+        aliases:
+          - ${DOMAIN_NAME}
     restart: always
     depends_on:
       wordpress:
         condition: service_healthy
     volumes:
-      - ${INCEPTION_PATH}/wordpress:/var/www
+      - ${INCEPTION_PATH}/wordpress:/var/www/html
       # - wordpress_volume:/var/www
-      # - db_volume:/var/lib/mysql
 
 networks:
-  frontend:
-    driver: bridge
-  backend:
-    driver: bridge
+  frontend: {}
+  backend: {}
 
 # volumes:
 #   wordpress_volume:

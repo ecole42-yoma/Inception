@@ -2,10 +2,14 @@
 # stable version for legacy
 FROM alpine:3.14
 
+EXPOSE 3306
+
 ENV MYSQL_ROOT_PASSWORD=password
 ENV MYSQL_DATABASE=wordpress
 ENV MYSQL_USER=yongmkim
 ENV MYSQL_PASSWORD=password
+
+STOPSIGNAL SIGINT
 
 RUN set -x && \
 	apk add nginx
@@ -16,17 +20,16 @@ RUN set -x && \
 		mariadb \
 		mariadb-client && \
     mkdir -p /docker-entrypoint.d && \
-	rm -rf /var/cache/apk/* && \
-	mkdir -p /var/run/mysqld
-	# mkdir -p /var/lib/mysql /var/run/mysqld
+	mkdir -p /var/lib/mysql /var/run/mysqld && \
+	rm -rf /var/cache/apk/*
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 
 
 RUN set -x && \
-	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh && \
-	/docker-entrypoint.d/configuration.sh
+	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh
+	# /docker-entrypoint.d/configuration.sh
 
 
 RUN set -x && \
@@ -35,9 +38,6 @@ RUN set -x && \
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-EXPOSE 3306
-
-STOPSIGNAL SIGQUIT
 
 CMD ["mysqld", "--user=mysql", "--datadir=/var/lib/mysql", "--basedir=/usr"]
 

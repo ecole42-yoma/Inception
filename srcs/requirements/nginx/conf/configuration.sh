@@ -44,34 +44,56 @@ check_error() {
 
 
 
+entrypoint_log "$ME: set dns setting - /etc/hosts 🔍 "
+echo "127.0.0.1	$DOMAIN_NAME" >> /etc/hosts
+check_error "$ME: set dns setting - /etc/hosts"
+
+
+
+
 # set nginx.conf file
 entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
-cat > /etc/nginx/http.d/default.conf << ''EOF
+cat > /etc/nginx/http.d/default.conf << EOF
+
+# server {
+# 	listen 80;
+# 	server_name $DOMAIN_NAME;
+
+# 	location / {
+# 		return 301 https://$DOMAIN_NAME\$request_uri;
+# 	}
+# }
+
 server {
 
 	listen				443 default_server ssl;
 	listen				[::]:443 default_server ssl;
+
 	ssl_certificate		/etc/ssl/certs/cert.pem;
 	ssl_certificate_key	/etc/ssl/certs/private-key.pem;
+	ssl_protocols		TLSv1.2 TLSv1.3;
+
 	server_name			$DOMAIN_NAME www.$DOMAIN_NAME;
-	error_log 			/var/log/nginx/error_log;
-	access_log 			/var/log/nginx/access_log;
 
-	root /var/lib/nginx/html;
+	error_log 			/var/log/nginx/error.log;
+	access_log 			/var/log/nginx/access.log;
 
-	# location / {
-	# 	index index.html index.php index.htm;
-	# }
+	root 				$WORDPRESS_PATH;
+
+	index 				index.html index.php index.htm;
 
 	location ~ \.php$ {
-		try_files $uri = 404;
-		include							fastcgi_params;
-		fastcgi_split_path_info			^(.+\.php)(/.+)$;
-		fastcgi_pass					wordpress:9000;
+		try_files	\$uri				= 404;
+		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
+		#^(.+\.php)(/.+)$;
+		# fastcgi_pass					wordpress:9000;
+		fastcgi_pass					$FRONT_NETWORK:9000;
 		fastcgi_index					index.php;
-		fastcgi_param SCRIPT_FILENAME	$document_root$fastcgi_script_name;
-		fastcgi_param SCRIPT_NAME		$fastcgi_script_name;
-		fastcgi_param PATH_INFO			$fastcgi_path_info;
+
+		include							fastcgi_params;
+		fastcgi_param SCRIPT_FILENAME	\$document_root\$fastcgi_script_name;
+		fastcgi_param SCRIPT_NAME		\$fastcgi_script_name;
+		fastcgi_param PATH_INFO			\$fastcgi_path_info;
 	}
 
 	# location /404/ {
@@ -87,12 +109,6 @@ server {
 EOF
 check_error "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf"
 echo ""
-
-
-entrypoint_log "$ME: set dns setting - /etc/hosts 🔍 "
-echo "127.0.0.1	$DOMAIN_NAME" >> /etc/hosts
-check_error "$ME: set dns setting - /etc/hosts"
-
 
 entrypoint_log "$ME: configuration step is all done ✨ "
 echo ""
