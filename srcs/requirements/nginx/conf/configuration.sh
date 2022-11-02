@@ -69,6 +69,9 @@ server {
 	listen				443 default_server ssl;
 	listen				[::]:443 default_server ssl;
 
+	# for security
+	server_tokens		off
+
 	ssl_certificate		/etc/ssl/certs/cert.pem;
 	ssl_certificate_key	/etc/ssl/certs/private-key.pem;
 	ssl_protocols		TLSv1.2 TLSv1.3;
