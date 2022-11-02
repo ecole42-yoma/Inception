@@ -15,9 +15,10 @@ services:
       retries: 21
     env_file: .env
     networks:
-      backend:
-        aliases:
-          - ${BACK_NETWORK}
+      - backend
+      # backend:
+        # aliases:
+        #   - ${BACK_NETWORK}
     restart: always
     volumes:
       - ${INCEPTION_PATH}/db:/var/lib/mysql
@@ -30,10 +31,12 @@ services:
       context: requirements/wordpress
     env_file: .env
     networks:
-      backend: {}
-      frontend:
-        aliases:
-          - ${FRONT_NETWORK}
+      - backend
+      - frontend
+      # backend: {}
+      # frontend:
+      #   aliases:
+      #     - ${FRONT_NETWORK}
     restart: always
     depends_on:
       mariadb:
@@ -50,12 +53,11 @@ services:
     env_file: .env
     ports:
       - "443:443"
-    # hostname: localhost
-    # domainname: ${DOMAIN_NAME}
     networks:
-      frontend:
-        aliases:
-          - ${DOMAIN_NAME}
+      - frontend
+      # frontend:
+      #   aliases:
+      #     - ${DOMAIN_NAME}
     restart: always
     depends_on:
       wordpress:
@@ -65,8 +67,10 @@ services:
       # - wordpress_volume:/var/www
 
 networks:
-  frontend: {}
-  backend: {}
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
 
 # volumes:
 #   wordpress_volume:
