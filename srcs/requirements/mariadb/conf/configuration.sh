@@ -85,9 +85,6 @@ then
     entrypoint_log "$ME: initializes the database directory : mariadb-install-db : Already installed"
     exit 0
 else
-    # check secure installation later
-    # mysql_secure_installation
-
     mariadb-install-db \
         --user=mysql \
         --skip-test-db \
@@ -97,6 +94,7 @@ else
         --loose-innodb_buffer_pool_dump_at_shutdown=0 \
         --datadir=/var/lib/mysql \
         --basedir=/usr
+
     # mariadb-install-db --user=mysql --datadir=/var/lib/mysql
     check_error "$ME: initializes the database directory : mariadb-install-db"
 fi
@@ -138,10 +136,11 @@ entrypoint_log "$ME: database default setting 🔍 "
     echo "DROP DATABASE IF EXISTS test;"
     echo "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
     echo "CREATE OR REPLACE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+    echo "CREATE OR REPLACE USER 'mysql'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
     echo "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION;"
+    echo "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO 'mysql'@'%' WITH GRANT OPTION;"
     echo "FLUSH PRIVILEGES;"
 } | mysqld --user=mysql --datadir=/var/lib/mysql --bootstrap
-# check_error "$ME: database default setting"
 check_error "$ME: database default setting"
 
 

@@ -33,18 +33,6 @@ check_error "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf"
 
 
 entrypoint_log "$ME: install wordpress, setting 🔍 "
-# wp-cli core is-installed --path=$WORDPRESS_PATH
-# if [ $? -eq 0 ]
-# then
-#     # already installed
-#     entrypoint_log "wp-cli core update 🔍 "
-#     wp-cli core update --path=$WORDPRESS_PATH
-
-#     entrypoint_log "wp-cli core update-db 🔍 "
-#     wp-cli core update-db --path=$WORDPRESS_PATH
-# else
-    # install
-
 if [ $(find $WORDPRESS_PATH -follow -type f -print | wc -l) -eq 0 ]
 then
 
@@ -60,31 +48,16 @@ then
     entrypoint_log "wp-cli user create 🔍 "
     wp-cli user create $WORDPRESS_USER $WORDPRESS_EMAIL --role=$WORDPRESS_USER_ROLE --user_pass=$WORDPRESS_USER_PASSWORD --path=$WORDPRESS_PATH
 else
-    entrypoint_log "$ME: already installed wordpress, setting - skip"
+# already installed
+    entrypoint_log "$ME: already installed wordpress : try update"
+
+    entrypoint_log "wp-cli core update 🔍 "
+    wp-cli core update --path=$WORDPRESS_PATH
+
+    entrypoint_log "wp-cli core update-db 🔍 "
+    wp-cli core update-db --path=$WORDPRESS_PATH
 fi
-
 check_error "$ME: install wordpress, setting"
-
-
-
-
-
-
-
-# entrypoint_log "$ME: create directory : /usr/html 🔍 "
-# if [ ! -d /usr/html ] ; then
-# 	echo "[i] Creating directories..."
-# 	mkdir -p /usr/html
-# 	echo "[i] Fixing permissions..."
-# 	# chown -R nginx:nginx /usr/html
-# 	# chown -R www-data:www-data /usr/html
-# else
-# 	echo "[i] Fixing permissions..."
-# 	# chown -R nginx:nginx /usr/html
-# 	# chown -R www-data:www-data /usr/html
-# fi
-# check_error "$ME: create directory : /usr/html"
-
 
 
 
@@ -95,7 +68,4 @@ check_error "$ME: create directory : /usr/logs/php-fpm"
 
 
 
-entrypoint_log "$ME: copy static_site to $WORDPRESS_PATH 🔍 "
-cp -R /profile $WORDPRESS_PATH
-check_error "$ME: copy static_site to $WORDPRESS_PATH"
 echo ""

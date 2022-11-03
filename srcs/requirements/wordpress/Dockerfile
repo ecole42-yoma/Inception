@@ -25,15 +25,11 @@ RUN apk add --no-cache bash curl less vim nginx ca-certificates git tzdata zip \
     php8-intl php8-bcmath php8-dom php8-mbstring php8-xmlreader mysql-client curl && \
     apk add -u musl && \
     ln -s /usr/bin/php8 /usr/bin/php && \
-    mkdir -p /docker-entrypoint.d /profile/profile_source && \
+    mkdir -p /docker-entrypoint.d /profile/profile_source /var/www/adminer && \
     rm -rf /var/cache/apk/*
-
-
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
-COPY conf/profile.html /profile
-COPY conf/profile_source/* /profile/profile_source
 
 
 RUN set -e && \
@@ -41,12 +37,14 @@ RUN set -e && \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \
 	mv wp-cli.phar /usr/bin/wp-cli && \
+    ln -s /usr/bin/wp-cli /usr/bin/wp && \
     adduser -G www-data -D www-data && \
 	chown www-data:www-data /usr/bin/wp-cli
 
 
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD [ "php-fpm8", "-F" ]
+CMD [ "php-fpm", "-F" ]
 
 

@@ -12,9 +12,6 @@ ENV MYSQL_PASSWORD=password
 STOPSIGNAL SIGINT
 
 RUN set -x && \
-	apk add nginx
-
-RUN set -x && \
 	apk update && \
 	apk add --no-cache\
 		mariadb \
@@ -28,13 +25,9 @@ COPY conf/configuration.sh /docker-entrypoint.d
 
 
 RUN set -x && \
-	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh
-	# /docker-entrypoint.d/configuration.sh
-
-
-RUN set -x && \
+	chmod +x /docker-entrypoint.sh /docker-entrypoint.d/configuration.sh && \
 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
-	chmod 777 /var/run/mysqld
+	chmod 755 /var/run/mysqld
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
