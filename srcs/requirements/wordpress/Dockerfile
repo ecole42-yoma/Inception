@@ -11,7 +11,7 @@ STOPSIGNAL SIGINT
 
 EXPOSE 9000
 
-HEALTHCHECK --interval=1s --timeout=2s --retries=21 \
+HEALTHCHECK --interval=1s --timeout=2s --start-period=30s --retries=30 \
             CMD [ "nc", "-z", "localhost", "9000" ]
 
 
@@ -25,13 +25,15 @@ RUN apk add --no-cache bash curl less vim nginx ca-certificates git tzdata zip \
     php8-intl php8-bcmath php8-dom php8-mbstring php8-xmlreader mysql-client curl && \
     apk add -u musl && \
     ln -s /usr/bin/php8 /usr/bin/php && \
-    mkdir -p /docker-entrypoint.d && \
+    mkdir -p /docker-entrypoint.d /profile/profile_source && \
     rm -rf /var/cache/apk/*
 
 
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
+COPY conf/profile.html /profile
+COPY conf/profile_source/* /profile/profile_source
 
 
 RUN set -e && \

@@ -16,9 +16,6 @@ services:
     env_file: .env
     networks:
       - backend
-      # backend:
-        # aliases:
-        #   - ${BACK_NETWORK}
     restart: always
     volumes:
       - ${INCEPTION_PATH}/db:/var/lib/mysql
@@ -33,10 +30,6 @@ services:
     networks:
       - backend
       - frontend
-      # backend: {}
-      # frontend:
-      #   aliases:
-      #     - ${FRONT_NETWORK}
     restart: always
     depends_on:
       mariadb:
@@ -55,9 +48,6 @@ services:
       - "443:443"
     networks:
       - frontend
-      # frontend:
-      #   aliases:
-      #     - ${DOMAIN_NAME}
     restart: always
     depends_on:
       wordpress:

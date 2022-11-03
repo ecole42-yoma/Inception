@@ -5,7 +5,7 @@ set -e
 ME=$(basename $0)
 
 entrypoint_log() {
-    if [ -z "${MARIADB_ENTRYPOINT_QUIET_LOGS:-}" ]; then
+    if [ -z "${ENTRYPOINT_QUIET_LOGS:-}" ]; then
         echo "[MARIADB - Configuration] $@"
     fi
 }

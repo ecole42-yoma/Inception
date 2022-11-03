@@ -7,18 +7,18 @@ set -e
 ME=$(basename $0)
 
 entrypoint_log() {
-    if [ -z "${WORDPRESS_ENTRYPOINT_QUIET_LOGS:-}" ]; then
+    if [ -z "${ENTRYPOINT_QUIET_LOGS:-}" ]; then
         echo "[WORDPRESS] $@"
     fi
 }
 
 check_error() {
     if [ $? -ne 0 ]; then
-        echo "[MARIADB - Configuration] $@ : fail ❌ "
+        echo "[WORDPRESS - Configuration] $@ : fail ❌ "
         echo ""
         exit 1
     else
-        echo "[MARIADB - Configuration] $@ : complete ✅ "
+        echo "[WORDPRESS - Configuration] $@ : complete ✅ "
         echo ""
     fi
 }
@@ -60,7 +60,7 @@ then
     entrypoint_log "wp-cli user create 🔍 "
     wp-cli user create $WORDPRESS_USER $WORDPRESS_EMAIL --role=$WORDPRESS_USER_ROLE --user_pass=$WORDPRESS_USER_PASSWORD --path=$WORDPRESS_PATH
 else
-    entrypoint_log "$ME: already installed wordpress, setting"
+    entrypoint_log "$ME: already installed wordpress, setting - skip"
 fi
 
 check_error "$ME: install wordpress, setting"
@@ -95,8 +95,7 @@ check_error "$ME: create directory : /usr/logs/php-fpm"
 
 
 
-
-
-
-entrypoint_log "$ME: configuration step is all done ✨ "
+entrypoint_log "$ME: copy static_site to $WORDPRESS_PATH 🔍 "
+cp -R /profile $WORDPRESS_PATH
+check_error "$ME: copy static_site to $WORDPRESS_PATH"
 echo ""

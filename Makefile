@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/02 14:37:55 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/03 22:52:54 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,12 +24,14 @@ else
 	PATH_DATA	=	/home/$(USER)/data
 endif
 
-.PHONY	:	all up  $(NAME) build make_dir
+.PHONY	:	all up  $(NAME) build pre_process make_dir
 up		:	all
 all		:	$(NAME) make_dir; 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
-build	:	make_dir;			$(SUDO) docker compose -f $(DOCKER_COMPOSE) build
+build	:	pre_process;		$(SUDO) docker compose -f $(DOCKER_COMPOSE) build
 $(NAME)	:
+
 # preprocess
+pre_process:	make_dir;		$(SUDO) cp -R ./srcs/requirements/tools/ $(PATH_DATA)/wordpress/
 make_dir:;						$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/db $(PATH_DATA)/bonus $(PATH_DATA)/tools
 
 .PHONY	:	clean down

@@ -5,7 +5,7 @@
 set -e
 
 entrypoint_log() {
-    if [ -z "${WORDPRESS_ENTRYPOINT_QUIET_LOGS:-}" ]; then
+    if [ -z "${ENTRYPOINT_QUIET_LOGS:-}" ]; then
         echo "[WORDPRESS] $@"
     fi
 }

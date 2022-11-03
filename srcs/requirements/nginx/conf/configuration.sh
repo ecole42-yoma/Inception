@@ -5,7 +5,7 @@ set -e
 ME=$(basename $0)
 
 entrypoint_log() {
-    if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
+    if [ -z "${ENTRYPOINT_QUIET_LOGS:-}" ]; then
         echo "[NGINX - Configuration] $@"
     fi
 }
@@ -53,6 +53,7 @@ check_error "$ME: set dns setting - /etc/hosts"
 
 # set nginx.conf file
 entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
+# cat > /etc/nginx/http.d/default.conf << ''EOF
 cat > /etc/nginx/http.d/default.conf << EOF
 
 # server {
@@ -70,7 +71,7 @@ server {
 	listen				[::]:443 default_server ssl;
 
 	# for security
-	server_tokens		off
+	server_tokens		off;
 
 	ssl_certificate		/etc/ssl/certs/cert.pem;
 	ssl_certificate_key	/etc/ssl/certs/private-key.pem;
@@ -89,7 +90,6 @@ server {
 		try_files	\$uri				= 404;
 		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
 		#^(.+\.php)(/.+)$;
-		# fastcgi_pass					wordpress:9000;
 		fastcgi_pass					$FRONT_NETWORK:9000;
 		fastcgi_index					index.php;
 
