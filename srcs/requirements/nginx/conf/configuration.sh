@@ -55,7 +55,6 @@ check_error "$ME: set dns setting - /etc/hosts"
 entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
 # cat > /etc/nginx/http.d/default.conf << ''EOF
 cat > /etc/nginx/http.d/default.conf << EOF
-
 server {
 
 	listen				443 default_server ssl;
@@ -74,7 +73,7 @@ server {
 	access_log 			/var/log/nginx/access.log;
 
 	root 				$WORDPRESS_PATH;
-	index 				index.html index.php index.htm;
+	index 				index.html index.php;
 
 	location ~ \.php$ {
 		try_files	\$uri				= 404;
@@ -85,26 +84,21 @@ server {
 		fastcgi_index					index.php;
 		include							fastcgi_params;
 		fastcgi_param SCRIPT_FILENAME	\$document_root\$fastcgi_script_name;
-		fastcgi_param SCRIPT_NAME		\$fastcgi_script_name;
 		fastcgi_param PATH_INFO			\$fastcgi_path_info;
 	}
 
-	location ~ \.adminer$ {
+	location ~ /adminer$ {
 		error_log 						/var/log/nginx/adminer_error.log;
 		access_log 						/var/log/nginx/adminer_access.log;
-		try_files	\$uri 				/adminer.php = 404;
 		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
 		fastcgi_param HTTP_PROXY		"";
 		include 						fastcgi_params;
 		fastcgi_pass 					$ADMINER_NETWORK:8080;
-		fastcgi_param SCRIPT_FILENAME 	\$document_root\$fastcgi_script_name;
-		fastcgi_param SCRIPT_NAME		\$fastcgi_script_name;
-		fastcgi_param PATH_INFO			\$fastcgi_path_info;
+		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
 	}
 
-	location ~ \.profile$ {
-		#### new container connect
-		# try_files	\$uri /profile/profile.html = 404;
+	location ~ /profile$ {
+		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
 	}
 
 	# location /404/ {
@@ -119,9 +113,17 @@ server {
 }
 EOF
 check_error "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf"
-echo ""
+
+
+
+
+
+
+
+
+
+
 
 entrypoint_log "$ME: configuration step is all done ✨ "
 echo ""
-
 exit 0

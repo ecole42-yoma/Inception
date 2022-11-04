@@ -26,6 +26,8 @@ check_error() {
 
 entrypoint_log "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf 🔍 "
 sed -i "/listen = /c\listen = 0.0.0.0:9000" /etc/php8/php-fpm.d/www.conf
+sed -i "/user = nobody/c\user = www-data" /etc/php8/php-fpm.d/www.conf
+sed -i "/group = nobody/c\group = www-data" /etc/php8/php-fpm.d/www.conf
 check_error "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf"
 
 
@@ -59,13 +61,3 @@ else
 fi
 check_error "$ME: install wordpress, setting"
 
-
-
-entrypoint_log "$ME: create directory : /usr/logs/php-fpm 🔍 "
-# start php-fpm
-mkdir -p /usr/logs/php-fpm
-check_error "$ME: create directory : /usr/logs/php-fpm"
-
-
-
-echo ""

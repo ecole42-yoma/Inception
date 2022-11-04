@@ -26,7 +26,7 @@ check_error() {
 
 entrypoint_log "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf 🔍 "
 sed -i "/listen = /c\listen = 0.0.0.0:8080" /etc/php8/php-fpm.d/www.conf
+sed -i "/user = nobody/c\user = www-data" /etc/php8/php-fpm.d/www.conf
+sed -i "/group = nobody/c\group = www-data" /etc/php8/php-fpm.d/www.conf
 check_error "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf"
-
-
 

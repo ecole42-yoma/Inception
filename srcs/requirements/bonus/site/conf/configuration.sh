@@ -8,25 +8,47 @@ ME=$(basename $0)
 
 entrypoint_log() {
     if [ -z "${ENTRYPOINT_QUIET_LOGS:-}" ]; then
-        echo "[REDIS] $@"
+        echo "[SITE] $@"
     fi
 }
 
 check_error() {
     if [ $? -ne 0 ]; then
-        echo "[REDIS - Configuration] $@ : fail ❌ "
+        echo "[SITE - Configuration] $@ : fail ❌ "
         echo ""
         exit 1
     else
-        echo "[REDIS - Configuration] $@ : complete ✅ "
+        echo "[SITE - Configuration] $@ : complete ✅ "
         echo ""
     fi
 }
 
+# set nginx.conf file
+entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
+# cat > /etc/nginx/http.d/default.conf << ''EOF
+cat > /etc/nginx/http.d/default.conf << EOF
+server {
 
-entrypoint_log "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf 🔍 "
-sed -i "/listen = /c\listen = 0.0.0.0:9000" /etc/php8/php-fpm.d/www.conf
-check_error "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf"
+	listen				4242;
+	listen				[::]:4242;
 
+	# for security
+	server_tokens		off;
 
+	error_log 			/var/log/nginx/error.log;
+	access_log 			/var/log/nginx/access.log;
+
+	root 				/profile;
+	index 				profile.html;
+
+	location = / {
+		try_files		/profile.html = 404;
+	}
+
+	location / {
+		try_files		/profile.html = 404;
+	}
+}
+EOF
+check_error "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf"
 
