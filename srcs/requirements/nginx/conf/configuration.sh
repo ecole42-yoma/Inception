@@ -75,6 +75,10 @@ server {
 	root 				$WORDPRESS_PATH;
 	index 				index.html index.php;
 
+	location ~ /profile$ {
+		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
+	}
+
 	location ~ \.php$ {
 		try_files	\$uri				= 404;
 		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
@@ -95,10 +99,6 @@ server {
 		include 						fastcgi_params;
 		fastcgi_pass 					$ADMINER_NETWORK:8080;
 		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
-	}
-
-	location ~ /profile$ {
-		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
 	}
 
 	# location /404/ {

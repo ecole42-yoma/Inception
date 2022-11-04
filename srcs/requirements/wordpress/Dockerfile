@@ -13,7 +13,6 @@ HEALTHCHECK --interval=1s --timeout=2s --start-period=30s --retries=30 \
 RUN apk add --no-cache \
     curl \
     mariadb-client \
-    redis \
     php8 \
     php8-fpm \
     php8-phar \
@@ -21,6 +20,8 @@ RUN apk add --no-cache \
     php8-json \
     php8-mysqli \
     php8-iconv \
+    php8-mbstring \
+    php8-tokenizer \
     php8-curl && \
     ln -s /usr/bin/php8 /usr/bin/php && \
     mkdir -p /docker-entrypoint.d /var/www/adminer && \

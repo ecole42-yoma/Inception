@@ -6,6 +6,9 @@ ENV CERTS_=/CN=yongmkim.42.fr/
 
 STOPSIGNAL SIGINT
 
+HEALTHCHECK --interval=1s --timeout=2s --start-period=1s --retries=30 \
+            CMD [ "nc", "-z", "localhost", "443" ]
+
 RUN set -x && \
     apk add --no-cache \
         nginx \

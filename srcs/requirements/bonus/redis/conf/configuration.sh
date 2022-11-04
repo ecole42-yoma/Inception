@@ -24,9 +24,10 @@ check_error() {
 }
 
 
-entrypoint_log "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf 🔍 "
-sed -i "/listen = /c\listen = 0.0.0.0:9000" /etc/php8/php-fpm.d/www.conf
-check_error "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf"
+entrypoint_log "$ME: setting default conf : /etc/redis.conf 🔍 "
+sed -i "s/bind 127.0.0.1/bind 0.0.0.0/g" /etc/redis.conf
+sed -i "s/protected-mode yes/protected-mode no/g" /etc/redis.conf
+check_error "$ME: setting default conf : /etc/redis.conf"
 
 
 

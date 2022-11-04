@@ -41,12 +41,8 @@ server {
 	root 				/profile;
 	index 				profile.html;
 
-	location = / {
-		try_files		/profile.html = 404;
-	}
-
 	location / {
-		try_files		/profile.html = 404;
+		try_files	\$uri	/profile.html = 404;
 	}
 }
 EOF

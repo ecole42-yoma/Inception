@@ -6,8 +6,8 @@ STOPSIGNAL SIGINT
 
 EXPOSE 8080
 
-# HEALTHCHECK --interval=1s --timeout=2s --start-period=30s --retries=30 \
-#             CMD [ "nc", "-z", "localhost", "9000" ]
+HEALTHCHECK --interval=1s --timeout=2s --start-period=1s --retries=30 \
+            CMD [ "nc", "-z", "localhost", "8080" ]
 
 RUN apk add --no-cache \
     mariadb-client \

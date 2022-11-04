@@ -10,7 +10,7 @@ entrypoint_log() {
     fi
 }
 
-if [ "$1" = "php-fpm8" -o "$1" = "redis-debug" ]; then
+if [ "$1" = "redis-server" -o "$1" = "redis-debug" ]; then
     if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
         entrypoint_log "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
 

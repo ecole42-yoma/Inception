@@ -31,6 +31,7 @@ services:
     networks:
       - backend
       - frontend
+      - cache_server
     restart: always
     depends_on:
       mariadb:
@@ -49,6 +50,7 @@ services:
       - "443:443"
     networks:
       - frontend
+      - static_site_network
     restart: always
     depends_on:
       wordpress:
@@ -57,6 +59,12 @@ services:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
       # - wordpress_volume:/var/www/html
 
+
+
+
+
+
+
 # adminer service - bonus
   adminer:
     container_name: adminer
@@ -64,8 +72,8 @@ services:
       context:  requirements/bonus/adminer
     env_file: .env
     networks:
-      - frontend
       - backend
+      - frontend
     restart: always
     depends_on:
       mariadb:
@@ -80,16 +88,36 @@ services:
       context: requirements/bonus/site
     env_file: .env
     networks:
-      - frontend
+      - static_site_network
     restart: always
     depends_on:
       nginx:
         condition: service_started
 
+# redis : cache - bonus
+  redis:
+    container_name: redis
+    build:
+      context: requirements/bonus/redis
+    env_file: .env
+    networks:
+      - cache_server
+    restart: always
+    depends_on:
+      wordpress:
+        condition: service_healthy
+
+
+
+
 networks:
   frontend:
     driver: bridge
+  static_site_network:
+    driver: bridge
   backend:
+    driver: bridge
+  cache_server:
     driver: bridge
 
 # volumes:

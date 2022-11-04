@@ -61,3 +61,22 @@ else
 fi
 check_error "$ME: install wordpress, setting"
 
+
+
+
+entrypoint_log "$ME: install redis-cache , setting 🔍 "
+if [ $(find $WORDPRESS_PATH/wp-content/plugins/redis-cache/ -follow -type f -print | wc -l) -eq 0 ]
+then
+    entrypoint_log "wp-cli plugin install redis-cache 🔍 "
+    wp-cli plugin install redis-cache --activate --path=$WORDPRESS_PATH
+    wp-cli config set WP_REDIS_HOST $CACHE_NETWORK --path=$WORDPRESS_PATH
+else
+    entrypoint_log "wp-cli plugin activate redis-cache 🔍 "
+    wp-cli plugin activate redis-cache --path=$WORDPRESS_PATH
+    echo ""
+    entrypoint_log "wp-cli plugin update redis-cache 🔍 "
+    wp-cli plugin update redis-cache --path=$WORDPRESS_PATH
+fi
+entrypoint_log "wp-cli redis enable 🔍 "
+wp-cli redis enable --path=$WORDPRESS_PATH
+check_error "$ME: install redis-cache , setting"
