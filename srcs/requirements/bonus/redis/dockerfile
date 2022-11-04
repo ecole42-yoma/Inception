@@ -6,7 +6,7 @@ STOPSIGNAL SIGINT
 
 EXPOSE 6379
 
-HEALTHCHECK --interval=1s --timeout=2s --retries=30 \
+HEALTHCHECK --interval=1s --timeout=2s --start-period=3s --retries=30 \
             CMD [ "redis-cli", "ping" ]
 
 RUN apk add --no-cache \

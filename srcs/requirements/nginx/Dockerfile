@@ -14,8 +14,6 @@ RUN set -x && \
         nginx \
         openssl && \
     mkdir -p /docker-entrypoint.d && \
-    touch /var/lib/nginx/blocked.log && \
-    chmod 777 /var/lib/nginx/blocked.log && \
     sed -i "s/ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3/ssl_protocols TLSv1.2 TLSv1.3/g" /etc/nginx/nginx.conf && \
     openssl genrsa -out /etc/ssl/certs/private-key.pem 2048 && \
     # openssl rsa -in /etc/ssl/certs/private-key.pem -pubout -out /etc/ssl/certs/public-key.pem && \

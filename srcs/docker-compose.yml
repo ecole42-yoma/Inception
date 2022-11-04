@@ -36,6 +36,8 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
 #       - wordpress_volume:/var/www/html
@@ -103,9 +105,9 @@ services:
     networks:
       - cache_server
     restart: always
-    depends_on:
-      wordpress:
-        condition: service_healthy
+    # depends_on:
+    #   wordpress:
+    #     condition: service_healthy
 
 
 

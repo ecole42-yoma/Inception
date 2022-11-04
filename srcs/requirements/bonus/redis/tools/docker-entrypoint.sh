@@ -47,4 +47,5 @@ fi
 
 entrypoint_log "$0: Now start up 🔥 "
 echo ""
+
 exec "$@"

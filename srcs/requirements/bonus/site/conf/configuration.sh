@@ -39,7 +39,7 @@ server {
 	access_log 			/var/log/nginx/access.log;
 
 	root 				/profile;
-	index 				profile.html;
+	index 				profile.html index.html;
 
 	location / {
 		try_files	\$uri	/profile.html = 404;

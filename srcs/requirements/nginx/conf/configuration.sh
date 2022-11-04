@@ -66,6 +66,7 @@ server {
 	ssl_certificate		/etc/ssl/certs/cert.pem;
 	ssl_certificate_key	/etc/ssl/certs/private-key.pem;
 	ssl_protocols		TLSv1.2 TLSv1.3;
+	ssl_prefer_server_ciphers on;
 
 	server_name			$DOMAIN_NAME www.$DOMAIN_NAME;
 
@@ -75,8 +76,19 @@ server {
 	root 				$WORDPRESS_PATH;
 	index 				index.html index.php;
 
-	location ~ /profile$ {
+	location ~ /profile {
 		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
+	}
+
+	location ~ /adminer {
+		error_log 						/var/log/nginx/adminer_error.log;
+		access_log 						/var/log/nginx/adminer_access.log;
+		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
+		fastcgi_param HTTP_PROXY		"";
+		fastcgi_pass 					$ADMINER_NETWORK:8080;
+		fastcgi_index					adminer.php;
+		include 						fastcgi_params;
+		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
 	}
 
 	location ~ \.php$ {
@@ -89,16 +101,6 @@ server {
 		include							fastcgi_params;
 		fastcgi_param SCRIPT_FILENAME	\$document_root\$fastcgi_script_name;
 		fastcgi_param PATH_INFO			\$fastcgi_path_info;
-	}
-
-	location ~ /adminer$ {
-		error_log 						/var/log/nginx/adminer_error.log;
-		access_log 						/var/log/nginx/adminer_access.log;
-		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
-		fastcgi_param HTTP_PROXY		"";
-		include 						fastcgi_params;
-		fastcgi_pass 					$ADMINER_NETWORK:8080;
-		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
 	}
 
 	# location /404/ {
@@ -126,4 +128,3 @@ check_error "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf"
 
 entrypoint_log "$ME: configuration step is all done ✨ "
 echo ""
-exit 0
