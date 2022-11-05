@@ -15,7 +15,8 @@ RUN set -x && \
 	apk update && \
 	apk add --no-cache\
 		mariadb \
-		mariadb-client && \
+		mariadb-client \
+		bash && \
     mkdir -p /docker-entrypoint.d && \
 	mkdir -p /var/lib/mysql /var/run/mysqld && \
 	rm -rf /var/cache/apk/*
