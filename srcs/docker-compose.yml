@@ -105,9 +105,9 @@ services:
     networks:
       - cache_server
     restart: always
-    # depends_on:
-    #   wordpress:
-    #     condition: service_healthy
+    depends_on:
+      wordpress:
+        condition: service_healthy
 
 
 
