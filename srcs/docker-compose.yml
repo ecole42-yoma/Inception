@@ -115,10 +115,13 @@ services:
 networks:
   frontend:
     driver: bridge
+
   static_site_network:
     driver: bridge
+
   backend:
     driver: bridge
+
   cache_server:
     driver: bridge
 
