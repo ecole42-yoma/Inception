@@ -8,17 +8,18 @@ EXPOSE 4242
 HEALTHCHECK --interval=1s --timeout=2s --start-period=1s --retries=30 \
             CMD [ "nc", "-z", "localhost", "4242" ]
 
-RUN set -x && \
+RUN set -ex && \
     apk add --no-cache \
         nginx && \
-    mkdir -p /docker-entrypoint.d
+    mkdir -p /docker-entrypoint.d && \
+    rm -rf /var/cache/apk/*
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 COPY conf/profile_source/ /profile/profile_source
 COPY conf/profile.html /profile
 
-RUN set -x && \
+RUN set -ex && \
     chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh /profile/profile.html
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

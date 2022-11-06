@@ -10,19 +10,20 @@ HEALTHCHECK --interval=1s --timeout=2s --start-period=30s --retries=30 \
             CMD [ "nc", "-z", "localhost", "9000" ]
 
 
-RUN apk add --no-cache \
-    curl \
-    mariadb-client \
-    php8 \
-    php8-fpm \
-    php8-phar \
-    php8-session \
-    php8-json \
-    php8-mysqli \
-    php8-iconv \
-    php8-mbstring \
-    php8-tokenizer \
-    php8-curl && \
+RUN set -ex && \
+    apk add --no-cache \
+        curl \
+        mariadb-client \
+        php8 \
+        php8-fpm \
+        php8-phar \
+        php8-session \
+        php8-json \
+        php8-mysqli \
+        php8-iconv \
+        php8-mbstring \
+        php8-tokenizer \
+        php8-curl && \
     ln -s /usr/bin/php8 /usr/bin/php && \
     mkdir -p /docker-entrypoint.d /var/www/adminer && \
     rm -rf /var/cache/apk/*
@@ -30,8 +31,7 @@ RUN apk add --no-cache \
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 
-
-RUN set -e && \
+RUN set -ex && \
 	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh && \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \

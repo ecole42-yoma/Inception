@@ -13,7 +13,7 @@ services:
       interval: 1s
       timeout: 2s
       retries: 21
-      #      start_period: 7s
+      start_period: 7s
     env_file: .env
     networks:
       - backend
