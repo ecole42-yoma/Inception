@@ -55,6 +55,8 @@ services:
     depends_on:
       wordpress:
         condition: service_healthy
+      site:
+        condition: service_healthy
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
       # - wordpress_volume:/var/www/html
@@ -90,9 +92,6 @@ services:
     networks:
       - static_site_network
     restart: always
-    depends_on:
-      nginx:
-        condition: service_started
 
 # redis : cache - bonus
   redis:
@@ -101,7 +100,9 @@ services:
       context: ./requirements/bonus/redis
     env_file: .env
     networks:
-      - cache_server
+      cache_server:
+        aliases:
+        - ${CACHE_NETWORK}
     restart: always
     depends_on:
       wordpress:

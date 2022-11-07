@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/07 19:48:16 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/08 01:46:24 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,6 +104,9 @@ command	:
 	@echo "top, ps, ls, show, info, log, volume"
 	@echo "exec : exec c='container name'"
 	@echo "curl : curl p='port number'"
+
+# redis-cli enter, keys *
+# wp redis status --path=$WORDPRESS_PATH
 
 # sudo apt update
 # sudo apt install git make
