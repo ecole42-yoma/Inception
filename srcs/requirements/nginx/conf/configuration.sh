@@ -46,6 +46,9 @@ check_error() {
 
 entrypoint_log "$ME: set dns setting - /etc/hosts 🔍 "
 echo "127.0.0.1	$DOMAIN_NAME" >> /etc/hosts
+
+# sed -i "/127.0.0.1 = localhost/c\127.0.0.1 = $DOMAIN_NAME" /etc/hosts
+
 check_error "$ME: set dns setting - /etc/hosts"
 
 

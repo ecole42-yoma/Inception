@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/07 15:49:50 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/07 17:17:29 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ build	:	pre_process;		$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) build
 $(NAME)	:
 
 # preprocess
-pre_process:	make_dir;		$(SUDO) cp -R ./srcs/requirements/tools/ $(PATH_DATA)/wordpress/
+# pre_process:	make_dir;		$(SUDO) cp -R ./srcs/requirements/tools/ $(PATH_DATA)/wordpress/
+pre_process:
 make_dir:;						$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/db $(PATH_DATA)/bonus $(PATH_DATA)/tools
 
 .PHONY	:	clean down
@@ -109,7 +110,7 @@ command	:
 # sudo apt update
 # sudo apt install git make
 # sudo apt install docker.io
-
+# echo "127.0.0.1	yongmkim.42.fr" >> /etc/hosts
 
 # sudo apt-get install \
 #     ca-certificates \
