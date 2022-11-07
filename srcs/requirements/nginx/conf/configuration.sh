@@ -23,36 +23,6 @@ check_error() {
 
 
 
-# delete TLSv1.1
-# entrypoint_log "$ME: set nginx.conf file - /etc/nginx/nginx.conf 🔍 "
-# sed -i "s/ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3/ssl_protocols TLSv1.2 TLSv1.3/g" /etc/nginx/nginx.conf
-# check_error "$ME: set nginx.conf file - /etc/nginx/nginx.conf"
-# echo ""
-
-
-# openssl key gen
-# SSL_DIR="/etc/ssl/certs"
-# entrypoint_log "$ME: set openssl key gen - /ssl/certs/ 🔍 "
-# openssl genrsa -out $SSL_DIR/private-key.pem 3072
-# check_error "openssl: rsa key gen - openssl genrsa -out $SSL_DIR/private-key.pem 3072"
-# openssl rsa -in $SSL_DIR/private-key.pem -pubout -out $SSL_DIR/public-key.pem
-# check_error "openssl: public key gen - openssl rsa -in $SSL_DIR/private-key.pem -pubout -out $SSL_DIR/public-key.pem"
-# openssl req -new -x509 -key $SSL_DIR/private-key.pem -out $SSL_DIR/cert.pem -days 360 -subj $CERTS_
-# check_error "openssl: self-signed cert gen - openssl req -new -x509 -key $SSL_DIR/private-key.pem -out $SSL_DIR/cert.pem -days 360 -subj $CERTS_"
-# entrypoint_log "$ME: set openssl key gen : complete ✅ "
-# echo ""
-
-
-
-entrypoint_log "$ME: set dns setting - /etc/hosts 🔍 "
-echo "127.0.0.1	$DOMAIN_NAME" >> /etc/hosts
-
-# sed -i "/127.0.0.1 = localhost/c\127.0.0.1 = $DOMAIN_NAME" /etc/hosts
-
-check_error "$ME: set dns setting - /etc/hosts"
-
-
-
 
 # set nginx.conf file
 entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "
