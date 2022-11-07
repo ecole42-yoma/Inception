@@ -38,7 +38,7 @@ entrypoint_log "$ME: install wordpress, setting 🔍 "
 # if [ $(find $WORDPRESS_PATH -follow -type f -print | wc -l) -eq 0 ]
 # then
 
-    entrypoint_log "wp-cli core download 🔍 "
+    # entrypoint_log "wp-cli core download 🔍 "
     # wp-cli core download --path=$WORDPRESS_PATH
 
     entrypoint_log "wp-cli config create 🔍 "
