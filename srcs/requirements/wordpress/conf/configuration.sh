@@ -35,8 +35,8 @@ check_error "$ME: setting default conf : /etc/php8/php-fpm.d/www.conf"
 
 
 entrypoint_log "$ME: install wordpress, setting 🔍 "
-if [ $(find $WORDPRESS_PATH -follow -type f -print | wc -l) -eq 0 ]
-then
+# if [ $(find $WORDPRESS_PATH -follow -type f -print | wc -l) -eq 0 ]
+# then
 
     entrypoint_log "wp-cli core download 🔍 "
     wp-cli core download --path=$WORDPRESS_PATH
@@ -49,16 +49,16 @@ then
 
     entrypoint_log "wp-cli user create 🔍 "
     wp-cli user create $WORDPRESS_USER $WORDPRESS_EMAIL --role=$WORDPRESS_USER_ROLE --user_pass=$WORDPRESS_USER_PASSWORD --path=$WORDPRESS_PATH
-else
-# already installed
-    entrypoint_log "$ME: already installed wordpress : try update"
+# else
+#     # already installed
+#     entrypoint_log "$ME: already installed wordpress : try update"
 
-    entrypoint_log "wp-cli core update 🔍 "
-    wp-cli core update --path=$WORDPRESS_PATH
+#     entrypoint_log "wp-cli core update 🔍 "
+#     wp-cli core update --path=$WORDPRESS_PATH
 
-    entrypoint_log "wp-cli core update-db 🔍 "
-    wp-cli core update-db --path=$WORDPRESS_PATH
-fi
+#     entrypoint_log "wp-cli core update-db 🔍 "
+#     wp-cli core update-db --path=$WORDPRESS_PATH
+# fi
 check_error "$ME: install wordpress, setting"
 
 
