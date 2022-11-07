@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/07 17:17:29 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/07 19:48:16 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,11 +67,9 @@ unpause	:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) unpause
 .PHONY	:	top ps ls show s info
 top		:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) top
 ps		:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) ps
-ls		:;	$(SUDO) $(DOC) ls
+# ls		:;	$(SUDO) $(DOC) ls
 s		:	show
 show	:
-	@make ls
-	@echo
 	@make ps
 	@echo
 	@make top

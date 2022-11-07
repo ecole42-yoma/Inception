@@ -22,23 +22,23 @@ services:
       - ${INCEPTION_PATH}/db:/var/lib/mysql
       # - db_volume:/var/lib/mysql
 
-# #wordpress service
-#   wordpress:
-#     container_name: wordpress
-#     build:
-#       context: ./requirements/wordpress
-#     env_file: .env
-#     networks:
-#       - backend
-#       - frontend
-#       - cache_server
-#     restart: always
-#     depends_on:
-#       mariadb:
-#         condition: service_healthy
-#     volumes:
-#       - ${INCEPTION_PATH}/wordpress:/var/www/html
-#       # - wordpress_volume:/var/www/html
+#wordpress service
+  wordpress:
+    container_name: wordpress
+    build:
+      context: ./requirements/wordpress
+    env_file: .env
+    networks:
+      - backend
+      - frontend
+      - cache_server
+    restart: always
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - ${INCEPTION_PATH}/wordpress:/var/www/html
+      # - wordpress_volume:/var/www/html
 
 # # nginx service
 #   nginx:
