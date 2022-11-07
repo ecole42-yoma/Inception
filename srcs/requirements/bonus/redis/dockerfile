@@ -23,7 +23,6 @@ RUN set -ex && \
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD [ "redis-server", "/etc/redis.conf" ]
-# CMD [ "redis-server" ]
 
 HEALTHCHECK --interval=1s --timeout=2s --start-period=3s --retries=30 \
             CMD [ "redis-cli", "ping" ]

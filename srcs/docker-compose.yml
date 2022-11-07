@@ -100,9 +100,7 @@ services:
       context: ./requirements/bonus/redis
     env_file: .env
     networks:
-      cache_server:
-        aliases:
-        - ${CACHE_NETWORK}
+      - cache_server
     restart: always
     depends_on:
       wordpress:
