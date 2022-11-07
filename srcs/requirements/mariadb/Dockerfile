@@ -13,8 +13,8 @@ STOPSIGNAL SIGINT
 
 RUN set -ex && \
 	# apk update && \
+	# coreutils \
 	apk add --no-cache\
-		coreutils \
 		mariadb \
 		mariadb-client && \
     mkdir -p /docker-entrypoint.d && \
