@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/03 22:52:54 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/07 15:49:50 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,15 +19,17 @@ PATH_DOCKER_COMPOSE	=	./srcs
 ifeq ($(WHERE), cluster)
 	SUDO		=	@
 	PATH_DATA	=	~/projects/goinfre/yongmkim/data
+	DOC			=	docker compose
 else
 	SUDO		=	@sudo
 	PATH_DATA	=	/home/$(USER)/data
+	DOC			=	docker-compose
 endif
 
 .PHONY	:	all up  $(NAME) build pre_process make_dir
 up		:	all
-all		:	$(NAME) make_dir; 	$(SUDO) docker compose -f $(DOCKER_COMPOSE) up --force-recreate --build -d
-build	:	pre_process;		$(SUDO) docker compose -f $(DOCKER_COMPOSE) build
+all		:	$(NAME) make_dir; 	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) up --force-recreate --build -d
+build	:	pre_process;		$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) build
 $(NAME)	:
 
 # preprocess
@@ -36,7 +38,7 @@ make_dir:;						$(SUDO) mkdir -p $(PATH_DATA)/wordpress $(PATH_DATA)/db $(PATH_D
 
 .PHONY	:	clean down
 clean	:	down
-down	:;						$(SUDO) docker compose -f $(DOCKER_COMPOSE) down
+down	:;						$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) down
 
 .PHONY	:	fclean
 fclean	:	clean;				$(SUDO) docker system prune -af --volumes
@@ -55,16 +57,16 @@ re		:
 
 .PHONY	:	stop pause
 stop	:;	$(SUDO) docker compose -f $(DOCKER_COMPOSE) stop
-pause	:;	$(SUDO) docker compose -f $(DOCKER_COMPOSE) pause
+pause	:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) pause
 
 .PHONY	:	start unpause
-start	:;	$(SUDO) docker compose -f $(DOCKER_COMPOSE) start
-unpause	:;	$(SUDO) docker compose -f $(DOCKER_COMPOSE) unpause
+start	:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) start
+unpause	:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) unpause
 
 .PHONY	:	top ps ls show s info
-top		:;	$(SUDO) docker compose -f $(DOCKER_COMPOSE) top
-ps		:;	$(SUDO) docker compose -f $(DOCKER_COMPOSE) ps
-ls		:;	$(SUDO) docker compose ls
+top		:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) top
+ps		:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) ps
+ls		:;	$(SUDO) $(DOC) ls
 s		:	show
 show	:
 	@make ls
@@ -77,7 +79,7 @@ info	:;	$(SUDO) docker info
 .PHONY	:	l log logs
 l		:	log
 log		:	logs
-logs	:;	$(SUDO) docker compose -f ./srcs/docker-compose.yml logs
+logs	:;	$(SUDO) $(DOC) -f ./srcs/docker-compose.yml logs
 
 .PHONY	:	v volumn volumes v-clean
 v		:	volumes
@@ -103,3 +105,23 @@ command	:
 	@echo "top, ps, ls, show, info, log, volume"
 	@echo "exec : exec c='container name'"
 	@echo "curl : curl p='port number'"
+
+# sudo apt update
+# sudo apt install git make
+# sudo apt install docker.io
+
+
+# sudo apt-get install \
+#     ca-certificates \
+#     curl \
+#     gnupg \
+#     lsb-release
+
+# sudo mkdir -p /etc/apt/keyrings
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# echo \
+# "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+# $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
