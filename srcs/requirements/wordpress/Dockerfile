@@ -12,7 +12,6 @@ HEALTHCHECK --interval=1s --timeout=2s --start-period=30s --retries=30 \
 
 RUN set -ex && \
     apk add --no-cache \
-        redis-cli \
         curl \
         mariadb-client \
         php8 \
