@@ -39,7 +39,7 @@ entrypoint_log "$ME: install wordpress, setting 🔍 "
 # then
 
     entrypoint_log "wp-cli core download 🔍 "
-    wp-cli core download --path=$WORDPRESS_PATH
+    # wp-cli core download --path=$WORDPRESS_PATH
 
     entrypoint_log "wp-cli config create 🔍 "
     wp-cli config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$BACK_NETWORK --path=$WORDPRESS_PATH
