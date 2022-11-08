@@ -2,27 +2,33 @@
 # stable version for legacy
 FROM alpine:3.14
 
-STOPSIGNAL SIGINT
+ENV CERTS_=/CN=yongmkim.42.fr/
+ENV FTP_PORT_MIN=40000
+ENV FTP_PORT_MAX=40042
 
-EXPOSE 6379
+STOPSIGNAL SIGINT
 
 RUN set -ex && \
     # apk update && \
     apk add --no-cache \
-        redis && \
+        vsftpd \
+        openssl && \
 	mkdir -p /docker-entrypoint.d && \
+    openssl genrsa -out /etc/ssl/certs/private-key.pem 2048 && \
+    # openssl rsa -in /etc/ssl/certs/private-key.pem -pubout -out /etc/ssl/certs/public-key.pem && \
+    openssl req -new -x509 -key /etc/ssl/certs/private-key.pem -out /etc/ssl/certs/cert.pem -days 360 -subj ${CERTS_} && \
     rm -rf /var/cache/apk/*
 
 COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 
 RUN set -ex && \
-	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh && \
-    chown -R redis:redis /docker-entrypoint.d
+	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh
+    # chown -R vsftpd:vsftpd /docker-entrypoint.d
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD [ "redis-server", "/etc/redis.conf" ]
+CMD [ "vsftpd", "/etc/vsftpd/vsftpd.conf" ]
 
-HEALTHCHECK --interval=1s --timeout=2s --start-period=3s --retries=30 \
-            CMD [ "redis-cli", "ping" ]
+# HEALTHCHECK --interval=1s --timeout=2s --start-period=3s --retries=30 \
+#             CMD [ "redis-cli", "ping" ]
