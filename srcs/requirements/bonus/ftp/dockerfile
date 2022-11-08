@@ -15,7 +15,6 @@ RUN set -ex && \
         openssl && \
 	mkdir -p /docker-entrypoint.d && \
     openssl genrsa -out /etc/ssl/certs/private-key.pem 2048 && \
-    # openssl rsa -in /etc/ssl/certs/private-key.pem -pubout -out /etc/ssl/certs/public-key.pem && \
     openssl req -new -x509 -key /etc/ssl/certs/private-key.pem -out /etc/ssl/certs/cert.pem -days 360 -subj ${CERTS_} && \
     rm -rf /var/cache/apk/*
 
@@ -32,3 +31,5 @@ CMD [ "vsftpd", "/etc/vsftpd/vsftpd.conf" ]
 
 # HEALTHCHECK --interval=1s --timeout=2s --start-period=3s --retries=30 \
 #             CMD [ "redis-cli", "ping" ]
+
+# openssl s_client -connect yongmkim.42.fr:21

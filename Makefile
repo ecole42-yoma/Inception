@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/08 20:11:51 by yongmkim         ###   ########.fr        #
+#    Updated: 2022/11/09 02:18:28 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,6 +107,8 @@ command	:
 
 # redis-cli enter, keys *
 # wp redis status --path=$WORDPRESS_PATH
+
+# need to add firewawll 20, 21 40000-40042 port
 
 # sudo apt update
 # sudo apt install git make
