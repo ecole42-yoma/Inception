@@ -106,6 +106,21 @@ services:
       wordpress:
         condition: service_healthy
 
+  # ftp:
+  #   container_name: ftp
+  #   build:
+  #     context: ./requirements/bonus/ftp
+  #   env_file: .env
+  #   networks:
+  #     - backend
+  #     - frontend
+  #   restart: always
+  #   depends_on:
+  #     nginx:
+  #       condition: service_healthy
+
+
+
 
 
 

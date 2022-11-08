@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/08 01:46:24 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/08 20:11:51 by yongmkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,9 +70,9 @@ ps		:;	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) ps
 # ls		:;	$(SUDO) $(DOC) ls
 s		:	show
 show	:
-	@make ps
-	@echo
 	@make top
+	@echo
+	@make ps
 info	:;	$(SUDO) docker info
 
 .PHONY	:	l log logs
