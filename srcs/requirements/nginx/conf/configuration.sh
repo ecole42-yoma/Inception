@@ -55,6 +55,10 @@ server {
 	root 				$WORDPRESS_PATH;
 	index 				index.html index.php;
 
+	location /	{
+		try_files						\$uri = 404;
+	}
+
 	location ~ /cadvisor {
 		proxy_pass 						http://$MONITOR_NETWORK:2121;
 	}
@@ -84,10 +88,6 @@ server {
 		include							fastcgi_params;
 		fastcgi_param SCRIPT_FILENAME	\$document_root\$fastcgi_script_name;
 		fastcgi_param PATH_INFO			\$fastcgi_path_info;
-	}
-
-	location ~* .(png|ico|gif|jpg|jpeg|css|js)$	{
-		try_files						\$uri = 404;
 	}
 
 	# location /404/ {
