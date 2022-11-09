@@ -7,7 +7,7 @@ services:
   mariadb:
     container_name: db
     build:
-      context: ./requirements/mariadb
+      context: requirements/mariadb
     healthcheck:
       test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
       interval: 1s
@@ -26,7 +26,7 @@ services:
   wordpress:
     container_name: wordpress
     build:
-      context: ./requirements/wordpress
+      context: requirements/wordpress
     env_file: .env
     networks:
       - backend
@@ -44,7 +44,7 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: ./requirements/nginx
+      context: requirements/nginx
     env_file: .env
     ports:
       - "443:443"
@@ -73,7 +73,7 @@ services:
   adminer:
     container_name: adminer
     build:
-      context:  ./requirements/bonus/adminer
+      context: requirements/bonus/adminer
     env_file: .env
     networks:
       - backend
@@ -89,7 +89,7 @@ services:
   site:
     container_name: site
     build:
-      context: ./requirements/bonus/site
+      context: requirements/bonus/site
     env_file: .env
     networks:
       - static_site_network
@@ -99,7 +99,7 @@ services:
   redis:
     container_name: redis
     build:
-      context: ./requirements/bonus/redis
+      context: requirements/bonus/redis
     env_file: .env
     networks:
       - cache_server
@@ -112,7 +112,7 @@ services:
   ftp:
     container_name: ftp
     build:
-      context: ./requirements/bonus/ftp
+      context: requirements/bonus/ftp
     env_file: .env
     ports:
       - "21:21"
@@ -131,7 +131,7 @@ services:
   cadvisor:
     container_name: cadvisor
     build:
-      context: ./requirements/bonus/cadvisor
+      context: requirements/bonus/cadvisor
     env_file: .env
     networks:
       - frontend
