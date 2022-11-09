@@ -64,6 +64,12 @@ server {
 		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
 	}
 
+	location ~ /cadvisor {
+		proxy_pass 						http://$MONITOR_NETWORK:8080;
+		proxy_redirect ~^/containers/	/cadvisor/containers/;
+		proxy_redirect ~^/docker/		/cadvisor/docker;
+	}
+
 	location ~ \.php$ {
 		try_files	\$uri				= 404;
 		fastcgi_split_path_info			^(.+?\.php)(/.*)$;

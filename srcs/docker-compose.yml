@@ -57,6 +57,8 @@ services:
         condition: service_healthy
       site:
         condition: service_healthy
+      cadvisor:
+        condition: service_started
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
       # - wordpress_volume:/var/www/html
@@ -106,6 +108,7 @@ services:
       wordpress:
         condition: service_healthy
 
+# vsftpd : ftp - bonus not supported tls env...
   ftp:
     container_name: ftp
     build:
@@ -124,9 +127,27 @@ services:
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
 
-
-
-
+# cAdvisor : monitoring for docker - bonus
+  cadvisor:
+    container_name: cadvisor
+    build:
+      context: ./requirements/bonus/cadvisor
+    ent_file: .env
+    networks:
+      - frontend
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    restart: "always"
+    pdepends_on:
+      wordpress:
+        condition: service_healthy
+    privileged: true
 
 
 networks:
