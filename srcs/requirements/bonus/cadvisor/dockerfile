@@ -8,7 +8,8 @@ EXPOSE 2121
 
 RUN set -ex && \
     apk add --no-cache \
-        libc6-compat && \
+        libc6-compat \
+		device-mapper findutils ndctl zfs && \
     adduser -G www-data -D www-data && \
 	mkdir -p /docker-entrypoint.d && \
 	wget https://github.com/google/cadvisor/releases/download/v0.39.3/cadvisor && \
@@ -27,5 +28,7 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD [ "cadvisor", "-logtostderr" ]
 
-# HEALTHCHECK --interval=1s --timeout=2s --start-period=3s --retries=30 \
-            # CMD [ "redis-cli", "ping" ]
+ENV CADVISOR_HEALTHCHECK_URL=http://localhost:8080/healthz
+
+HEALTHCHECK --interval=30s --timeout=3s \
+	CMD wget --quiet --tries=1 --spider $CADVISOR_HEALTHCHECK_URL || exit 1
