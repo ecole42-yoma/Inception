@@ -6,7 +6,7 @@
 #    By: yongmkim <yongmkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 23:26:38 by yongmkim          #+#    #+#              #
-#    Updated: 2022/11/09 15:44:36 by yongmkim         ###   ########seoul.kr   #
+#    Updated: 2022/11/10 02:07:57 by yongmkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ else
 endif
 
 .PHONY	:	all up  $(NAME) build pre_process make_dir
-up		:	all
+up		:	$(NAME) make_dir; 	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) up --build -d
 all		:	$(NAME) make_dir; 	$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) up --force-recreate --build -d
 build	:	pre_process;		$(SUDO) $(DOC) -f $(DOCKER_COMPOSE) build
 $(NAME)	:

@@ -64,9 +64,9 @@ server {
 
 
 
-	location ~ /cadvisor {
-		proxy_pass 						http://$MONITOR_NETWORK:2121;
-	}
+	# location ~ /cadvisor {
+	# 	proxy_pass 						http://$MONITOR_NETWORK:2121;
+	# }
 
 	location ~ /profile {
 		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
