@@ -61,22 +61,22 @@ pasv_enable=YES
 pasv_min_port=$FTP_PORT_MIN
 pasv_max_port=$FTP_PORT_MAX
 
-ssl_enable=YES
-rsa_cert_file=/etc/ssl/certs/cert.pem
-rsa_private_key_file=/etc/ssl/certs/private-key.pem
+# ssl_enable=YES
+# rsa_cert_file=/etc/ssl/certs/cert.pem
+# rsa_private_key_file=/etc/ssl/certs/private-key.pem
 
-allow_anon_ssl=NO
-force_local_data_ssl=YES
-force_local_logins_ssl=YES
-force_anon_data_ssl=NO
-force_anon_logins_ssl=NO
+# allow_anon_ssl=NO
+# force_local_data_ssl=YES
+# force_local_logins_ssl=YES
+# force_anon_data_ssl=NO
+# force_anon_logins_ssl=NO
 
-ssl_tlsv1=YES
-ssl_sslv2=NO
-ssl_sslv3=NO
+# ssl_tlsv1=YES
+# ssl_sslv2=NO
+# ssl_sslv3=NO
 
-require_ssl_reuse=NO
-ssl_ciphers=HIGH
+# require_ssl_reuse=NO
+# ssl_ciphers=HIGH
 EOF
 check_error "$ME: setting default conf : /etc/vsftpd/vsftpd.conf"
 
