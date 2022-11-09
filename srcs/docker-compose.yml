@@ -57,8 +57,8 @@ services:
         condition: service_healthy
       site:
         condition: service_healthy
-      cadvisor:
-        condition: service_started
+      # cadvisor:
+        # condition: service_started
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
       # - wordpress_volume:/var/www/html
