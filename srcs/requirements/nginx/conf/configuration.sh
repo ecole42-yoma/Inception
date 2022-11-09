@@ -76,6 +76,10 @@ server {
 		fastcgi_param PATH_INFO			\$fastcgi_path_info;
 	}
 
+	location / {
+		try_files						\$uri = 404;
+	}
+
 	# location /404/ {
 	# 	return 404;
 	# }
