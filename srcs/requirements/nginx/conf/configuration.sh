@@ -57,17 +57,29 @@ server {
 
 	location /	{
 		try_files						\$uri = 404;
+
+		location ~ \.php$ {
+			try_files	\$uri				= 404;
+			fastcgi_split_path_info			^(.+?\.php)(/.*)$;
+			# Mitigate https://httpoxy.org/ vulnerabilities
+			fastcgi_param HTTP_PROXY		"";
+			fastcgi_pass					$FRONT_NETWORK:9000;
+			fastcgi_index					index.php;
+			include							fastcgi_params;
+			fastcgi_param SCRIPT_FILENAME	\$document_root\$fastcgi_script_name;
+			fastcgi_param PATH_INFO			\$fastcgi_path_info;
+		}
 	}
 
-	location ~ /cadvisor {
+	location = /cadvisor/ {
 		proxy_pass 						http://$MONITOR_NETWORK:2121;
 	}
 
-	location ~ /profile {
+	location = /profile/ {
 		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
 	}
 
-	location ~ /adminer {
+	location = /adminer/ {
 		error_log 						/var/log/nginx/adminer_error.log;
 		access_log 						/var/log/nginx/adminer_access.log;
 		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
@@ -78,17 +90,7 @@ server {
 		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
 	}
 
-	location ~ \.php$ {
-		try_files	\$uri				= 404;
-		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
-		# Mitigate https://httpoxy.org/ vulnerabilities
-		fastcgi_param HTTP_PROXY		"";
-		fastcgi_pass					$FRONT_NETWORK:9000;
-		fastcgi_index					index.php;
-		include							fastcgi_params;
-		fastcgi_param SCRIPT_FILENAME	\$document_root\$fastcgi_script_name;
-		fastcgi_param PATH_INFO			\$fastcgi_path_info;
-	}
+
 
 	# location /404/ {
 	# 	return 404;
