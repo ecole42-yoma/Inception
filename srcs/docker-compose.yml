@@ -144,7 +144,7 @@ services:
     devices:
       - /dev/kmsg:/dev/kmsg
     restart: "always"
-    pdepends_on:
+    depends_on:
       wordpress:
         condition: service_healthy
     privileged: true
