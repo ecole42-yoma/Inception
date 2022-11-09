@@ -23,6 +23,12 @@ check_error() {
 
 
 
+entrypoint_log "$ME: adduser chwon 🔍 "
+adduser -G www-data -D www-data
+chown -R www-data:www-data /var/www/html
+entrypoint_log "$ME: adduser chwon complete ✅ "
+
+
 
 # set nginx.conf file
 entrypoint_log "$ME: set nginx default.conf file - /etc/nginx/http.d/deafault.conf 🔍 "

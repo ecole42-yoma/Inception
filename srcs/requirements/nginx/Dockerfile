@@ -18,8 +18,6 @@ RUN set -ex && \
     openssl genrsa -out /etc/ssl/certs/private-key.pem 2048 && \
     # openssl rsa -in /etc/ssl/certs/private-key.pem -pubout -out /etc/ssl/certs/public-key.pem && \
     openssl req -new -x509 -key /etc/ssl/certs/private-key.pem -out /etc/ssl/certs/cert.pem -days 360 -subj ${CERTS_} && \
-    adduser -G www-data -D www-data && \
-    chown -R www-data:www-data /var/www/html && \
     rm -rf /var/cache/apk/*
 
 COPY tools/docker-entrypoint.sh /
