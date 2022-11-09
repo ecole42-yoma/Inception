@@ -7,8 +7,8 @@ STOPSIGNAL SIGINT
 EXPOSE 2121
 
 RUN set -ex && \
-    apk add --no-cache \
-        libc6-compat && \
+    # apk add --no-cache \
+    #     libc6-compat && \
     adduser -G www-data -D www-data && \
 	mkdir -p /docker-entrypoint.d && \
 	wget https://github.com/google/cadvisor/releases/download/v0.39.3/cadvisor && \
@@ -22,7 +22,6 @@ COPY conf/configuration.sh /docker-entrypoint.d
 
 RUN set -ex && \
 	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh
-    # chown -R redis:redis /docker-entrypoint.d
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
