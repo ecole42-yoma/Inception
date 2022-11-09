@@ -65,7 +65,7 @@ server {
 	}
 
 	location ~ /cadvisor {
-		proxy_pass 						http://$MONITOR_NETWORK:8080;
+		proxy_pass 						http://$MONITOR_NETWORK:2121;
 		proxy_redirect ~^/containers/	/cadvisor/containers/;
 		proxy_redirect ~^/docker/		/cadvisor/docker;
 	}
