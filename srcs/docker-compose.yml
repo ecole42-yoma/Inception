@@ -132,7 +132,7 @@ services:
     container_name: cadvisor
     build:
       context: ./requirements/bonus/cadvisor
-    ent_file: .env
+    env_file: .env
     networks:
       - frontend
     volumes:
