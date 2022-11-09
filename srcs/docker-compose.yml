@@ -151,8 +151,7 @@ services:
     depends_on:
       wordpress:
         condition: service_healthy
-    command:
-      - privileged=true
+    privileged: true
 
 
 networks:
