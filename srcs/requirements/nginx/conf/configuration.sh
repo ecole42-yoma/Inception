@@ -76,11 +76,7 @@ server {
 		fastcgi_param PATH_INFO			\$fastcgi_path_info;
 	}
 
-	location = / {
-		try_files						/index.php = 404;
-	}
-
-	location / {
+	location ~* .(png|ico|gif|jpg|jpeg|css|js)$	{
 		try_files						\$uri = 404;
 	}
 
