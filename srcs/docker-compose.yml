@@ -130,9 +130,9 @@ services:
 # cAdvisor : monitoring for docker - bonus
   cadvisor:
     container_name: cadvisor
-    image:  gcr.io/google-containers/cadvisor:v0.33.0
-    # build:
-    #   context: requirements/bonus/cadvisor
+    # image:  gcr.io/google-containers/cadvisor:v0.33.0
+    build:
+      context: requirements/bonus/cadvisor
     env_file: .env
     ports:
       - "2121:2121"
@@ -151,7 +151,8 @@ services:
     depends_on:
       wordpress:
         condition: service_healthy
-    privileged: true
+    command:
+      - privileged=true
 
 
 networks:
