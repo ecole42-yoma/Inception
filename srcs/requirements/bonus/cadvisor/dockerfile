@@ -9,7 +9,6 @@ EXPOSE 2121
 RUN set -ex && \
     apk add --no-cache \
         libc6-compat && \
-    addgroup www-data && \
     adduser -G www-data -D www-data && \
 	mkdir -p /docker-entrypoint.d && \
 	wget https://github.com/google/cadvisor/releases/download/v0.39.3/cadvisor && \
