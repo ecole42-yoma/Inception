@@ -42,7 +42,7 @@ entrypoint_log "$ME: addgroup  adduser chown chpasswd ✅ "
 entrypoint_log "$ME: setting default conf : /etc/vsftpd/vsftpd.conf 🔍 "
 sed -i "/anonymous_enable=/c\anonymous_enable=NO" /etc/vsftpd/vsftpd.conf
 sed -i "/#local_enable=YES/c\local_enable=YES" /etc/vsftpd/vsftpd.conf
-# sed -i "/#local_umask=022/c\local_umask=077" /etc/vsftpd/vsftpd.conf
+sed -i "/#local_umask=022/c\local_umask=022" /etc/vsftpd/vsftpd.conf
 sed -i "/#write_enable=YES/c\write_enable=YES" /etc/vsftpd/vsftpd.conf
 # sed -i "/#chroot_local_user=YES/c\chroot_local_user=YES" /etc/vsftpd/vsftpd.conf
 sed -i "/#xferlog_file=\/var\/log\/vsftpd.log/c\xferlog_file=\/var\/log\/vsftpd.log" /etc/vsftpd/vsftpd.conf
