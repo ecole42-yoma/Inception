@@ -10,6 +10,7 @@ RUN set -ex && \
 	apk add --no-cache \
 		musl \
 		musl-utils \
+		libstdc++ \
 		gcompat && \
     adduser -G www-data -D www-data && \
 	mkdir -p /docker-entrypoint.d && \
