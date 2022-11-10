@@ -134,8 +134,8 @@ services:
     build:
       context: requirements/bonus/vscode
     env_file: .env
-    ports:
-      - 8443:8443
+    # ports:
+    #   - 8443:8443
     networks:
       - frontend
     restart: unless-stopped
