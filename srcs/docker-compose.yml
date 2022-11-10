@@ -130,31 +130,32 @@ services:
 
 # vscode server : vscode server - bonus
   vscode:
-    container_name: vscode
-    build:
-      context: requirements/bonus/vscode
-    env_file: .env
-    networks:
-      - frontend
-    restart: "always"
-
-    # image: lscr.io/linuxserver/code-server:latest
     # container_name: vscode
-    # environment:
-    #   - PUID=1000
-    #   - PGID=1000
-    #   - TZ=Europe/London
-    #   - PASSWORD=password #optional
-    #   # - HASHED_PASSWORD= #optional
-    #   # - SUDO_PASSWORD=password #optional
-    #   # - SUDO_PASSWORD_HASH= #optional
-    #   # - PROXY_DOMAIN=code-server.my.domain #optional
-    #   # - DEFAULT_WORKSPACE=/config/workspace #optional
-    # # volumes:
-    # #   - /path/to/appdata/config:/config
-    # ports:
-    #   - 8443:8443
-    # restart: unless-stopped
+    # build:
+    #   context: requirements/bonus/vscode
+    # env_file: .env
+    # networks:
+    #   - frontend
+    # restart: "always"
+
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: vscode
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - PASSWORD=password #optional
+      # - HASHED_PASSWORD= #optional
+      # - SUDO_PASSWORD=password #optional
+      # - SUDO_PASSWORD_HASH= #optional
+      # - PROXY_DOMAIN=code-server.my.domain #optional
+      # - DEFAULT_WORKSPACE=/config/workspace #optional
+    # volumes:
+    #   - /path/to/appdata/config:/config
+    ports:
+      # - 8443:8443
+      - 2121:2121
+    restart: unless-stopped
 
 
 networks:
