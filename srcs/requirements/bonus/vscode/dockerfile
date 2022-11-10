@@ -9,9 +9,9 @@ EXPOSE 2121
 RUN set -ex && \
 	apk add --no-cache \
 		musl \
-		musl-utils \
-		libstdc++ \
-		gcompat && \
+		libgcc \
+		libstdc++ && \
+		# gcompat && \
     adduser -G www-data -D www-data && \
 	mkdir -p /docker-entrypoint.d && \
     rm -rf /var/cache/apk/*
