@@ -27,8 +27,8 @@ ENV HOME="/config"
 
 RUN set -ex && \
 	echo "**** install runtime dependencies ****" && \
-	apt-get update && \
-	apt-get install -y \
+	apk update && \
+	apk install -y \
 		git \
 		jq \
 		libatomic1 \
@@ -48,12 +48,12 @@ RUN set -ex && \
 	tar xf /tmp/code-server.tar.gz -C \
 		/app/code-server --strip-components=1 && \
 	echo "**** clean up ****" && \
-	apt-get clean && \
-	rm -rf \
-		/config/* \
-		/tmp/* \
-		/var/lib/apt/lists/* \
-		/var/tmp/*
+    rm -rf /var/cache/apk/*
+	# rm -rf \
+	# 	/config/* \
+	# 	/tmp/* \
+	# 	/var/lib/apt/lists/* \
+	# 	/var/tmp/*
 
 # add local files
 COPY /tools /
