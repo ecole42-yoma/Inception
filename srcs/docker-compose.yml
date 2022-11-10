@@ -19,8 +19,8 @@ services:
       - backend
     restart: always
     volumes:
-      - ${INCEPTION_PATH}/db:/var/lib/mysql
-      # - db_volume:/var/lib/mysql
+      # - ${INCEPTION_PATH}/db:/var/lib/mysql
+      - db_volume:/var/lib/mysql
 
 #wordpress service
   wordpress:
@@ -37,8 +37,8 @@ services:
       mariadb:
         condition: service_healthy
     volumes:
-      - ${INCEPTION_PATH}/wordpress:/var/www/html
-      # - wordpress_volume:/var/www/html
+      # - ${INCEPTION_PATH}/wordpress:/var/www/html
+      - wordpress_volume:/var/www/html
 
 # nginx service
   nginx:
@@ -60,8 +60,8 @@ services:
       vscode:
         condition: service_started
     volumes:
-      - ${INCEPTION_PATH}/wordpress:/var/www/html
-      # - wordpress_volume:/var/www/html
+      # - ${INCEPTION_PATH}/wordpress:/var/www/html
+      - wordpress_volume:/var/www/html
 
 
 
@@ -125,7 +125,8 @@ services:
       nginx:
         condition: service_healthy
     volumes:
-      - ${INCEPTION_PATH}/wordpress:/var/www/html
+      # - ${INCEPTION_PATH}/wordpress:/var/www/html
+      - wordpress_volume:/var/www/html
 
 # vscode server : vscode server - bonus
   vscode:
@@ -169,17 +170,17 @@ networks:
   cache_server:
     driver: bridge
 
-# volumes:
-#   wordpress_volume:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${INCEPTION_PATH}/wordpress
+volumes:
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${INCEPTION_PATH}/wordpress
 
-#   db_volume:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${INCEPTION_PATH}/db
+  db_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${INCEPTION_PATH}/db
