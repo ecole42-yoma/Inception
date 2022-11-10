@@ -64,11 +64,11 @@ server {
 
 
 
-	# location ~ /vscode {
-	# 	proxy_pass 						http://$CODE_NETWORK:8443;
-	# 	proxy_set_header	Host		\$host;
-	# 	proxy_set_header	X-Real-IP	\$remote_addr;
-	# }
+	location ~ /vscode {
+		proxy_pass 						http://$CODE_NETWORK:8443;
+		proxy_set_header	Host		\$host;
+		proxy_set_header	X-Real-IP	\$remote_addr;
+	}
 
 	location ~ /profile {
 		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
