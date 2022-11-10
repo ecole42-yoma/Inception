@@ -24,8 +24,13 @@ check_error() {
 
 
 entrypoint_log "$ME: setup vscode 🔍 "
+wget https://github.com/cdr/code-server/releases/download/v3.3.1/code-server-3.3.1-linux-amd64.tar.gz
+tar -xzvf code-server-3.3.1-linux-amd64.tar.gz
+cp -r code-server-3.3.1-linux-amd64 /usr/lib/code-server
+ln -s /usr/lib/code-server/bin/code-server /usr/bin/code-server
+mkdir /var/lib/code-server
 
-wget -O- 'https://aka.ms/install-vscode-server/setup.sh' | sh
+# wget -O- 'https://aka.ms/install-vscode-server/setup.sh' | sh
 # curl -fsSL https://code-server.dev/install.sh | sh
 
 # check_error "$ME: setup vscode"
