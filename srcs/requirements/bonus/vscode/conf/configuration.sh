@@ -26,7 +26,7 @@ check_error() {
 entrypoint_log "$ME: setup vscode 🔍 "
 ## apt update && apt install -y gnome-keyring
 
-# wget -O- 'https://aka.ms/install-vscode-server/setup.sh' | sh
+wget -O- 'https://aka.ms/install-vscode-server/setup.sh' | sh
 # curl -fsSL https://code-server.dev/install.sh | sh
 
 ## vi ~/.config/code-server/config.yaml

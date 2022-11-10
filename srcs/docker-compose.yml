@@ -57,6 +57,8 @@ services:
         condition: service_healthy
       site:
         condition: service_healthy
+      vscode:
+        condition: service_started
     volumes:
       - ${INCEPTION_PATH}/wordpress:/var/www/html
       # - wordpress_volume:/var/www/html
@@ -131,11 +133,10 @@ services:
     build:
       context: requirements/bonus/vscode
     env_file: .env
-    ports:
-      - "2121:2121"
     networks:
       - frontend
     restart: "always"
+
     # image: lscr.io/linuxserver/code-server:latest
     # container_name: vscode
     # environment:
