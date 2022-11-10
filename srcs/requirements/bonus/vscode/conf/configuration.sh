@@ -24,13 +24,49 @@ check_error() {
 
 
 entrypoint_log "$ME: setup vscode 🔍 "
-## apt update && apt install -y gnome-keyring
+
+
+if [ -n "${PASSWORD}" ] || [ -n "${HASHED_PASSWORD}" ]; then
+    AUTH="password"
+else
+    AUTH="none"
+    echo "starting with no password"
+fi
+
+if [ -z ${PROXY_DOMAIN+x} ]; then
+    PROXY_DOMAIN_ARG=""
+else
+    PROXY_DOMAIN_ARG="--proxy-domain=${PROXY_DOMAIN}"
+fi
+
+sh \
+    /app/code-server/lib/node \
+        --/app/code-server
+        --bind-addr 0.0.0.0:8443 \
+        --user-data-dir /config/data \
+        --extensions-dir /config/extensions \
+        --disable-telemetry \
+        --auth "${AUTH}" \
+        "${PROXY_DOMAIN_ARG}" \
+        "${DEFAULT_WORKSPACE:-/config/workspace}"
+
+
+# exec \
+#     /app/code-server/lib/node \
+#         --/app/code-server
+#         --bind-addr 0.0.0.0:8443 \
+#         --user-data-dir /config/data \
+#         --extensions-dir /config/extensions \
+#         --disable-telemetry \
+#         --auth "${AUTH}" \
+#         "${PROXY_DOMAIN_ARG}" \
+#         "${DEFAULT_WORKSPACE:-/config/workspace}"
+
+
 
 # wget -O- 'https://aka.ms/install-vscode-server/setup.sh' | sh
 # curl -fsSL https://code-server.dev/install.sh | sh
 
-## vi ~/.config/code-server/config.yaml
-## dbus-run-session -- sh -c "(echo 'somecredstorepass' | gnome-keyring-daemon --unlock) && code-server serve-local --host 0.0.0.0"
 # check_error "$ME: setup vscode"
 
 

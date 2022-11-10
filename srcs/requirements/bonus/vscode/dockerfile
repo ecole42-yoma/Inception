@@ -27,14 +27,17 @@ ENV HOME="/config"
 
 RUN set -ex && \
 	echo "**** install runtime dependencies ****" && \
+	mkdir -p /docker-entrypoint.d /config  /root/etc/s6-overlay/s6-rc.d	&& \
 	apk update && \
 	apk add --no-cache \
+		s6	\
+		curl \
 		git \
 		jq \
-		libatomic1 \
+		libatomic \
 		nano \
 		net-tools \
-		netcat \
+		netcat-openbsd \
 		sudo && \
 	echo "**** install code-server ****" && \
 	if [ -z ${CODE_RELEASE+x} ]; then \
@@ -55,13 +58,13 @@ RUN set -ex && \
 	# 	/var/lib/apt/lists/* \
 	# 	/var/tmp/*
 
-# add local files
-COPY /tools /
-# COPY tools/docker-entrypoint.sh /
+COPY tools/docker-entrypoint.sh /
 COPY conf/configuration.sh /docker-entrypoint.d
 
 RUN set -ex && \
-	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh
+	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh \
+	/app/code-server/*/* \
+	/app/code-server/lib/node
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
