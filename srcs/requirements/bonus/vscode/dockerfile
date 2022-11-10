@@ -26,7 +26,7 @@ RUN set -ex && \
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD [ "code-server" ]
+CMD [ "code-server", "--auth=password", "--password=password", "--bind-addr=0.0.0.0:8443" ]
 
 # HEALTHCHECK --interval=30s --timeout=3s \
 # 	CMD wget --quiet --tries=1 --spider $CADVISOR_HEALTHCHECK_URL || exit 1
