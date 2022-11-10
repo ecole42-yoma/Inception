@@ -28,7 +28,7 @@ ENV HOME="/config"
 RUN set -ex && \
 	echo "**** install runtime dependencies ****" && \
 	apk update && \
-	apk install -y \
+	apk add --no-cache \
 		git \
 		jq \
 		libatomic1 \
