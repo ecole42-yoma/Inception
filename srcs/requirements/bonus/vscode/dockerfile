@@ -2,6 +2,8 @@
 # stable version for legacy
 FROM alpine:3.14
 
+ENV CERTS_=/CN=yongmkim.42.fr/
+
 STOPSIGNAL SIGINT
 
 EXPOSE 8443
@@ -9,11 +11,15 @@ EXPOSE 8443
 RUN set -ex && \
 	apk update && \
 	apk add --no-cache \
+		openssl \
 		musl \
 		musl-utils \
 		libgcc \
 		libstdc++ \
 		gcompat && \
+    openssl genrsa -out /etc/ssl/certs/private-key.pem 2048 && \
+    # openssl rsa -in /etc/ssl/certs/private-key.pem -pubout -out /etc/ssl/certs/public-key.pem && \
+    openssl req -new -x509 -key /etc/ssl/certs/private-key.pem -out /etc/ssl/certs/cert.pem -days 360 -subj ${CERTS_} && \
     adduser -G www-data -D www-data && \
 	mkdir -p /docker-entrypoint.d && \
     rm -rf /var/cache/apk/*
@@ -26,7 +32,7 @@ RUN set -ex && \
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD [ "code-server", "--auth=password", "--bind-addr=0.0.0.0:8443", "--cert=true" ]
+CMD [ "code-server", "--auth=password", "--bind-addr=0.0.0.0:8443", "--cert=/etc/ssl/certs/cert.pem", "--cert-key=/etc/ssl/certs/private-key.pem" ]
 
 # HEALTHCHECK --interval=30s --timeout=3s \
 # 	CMD wget --quiet --tries=1 --spider $CADVISOR_HEALTHCHECK_URL || exit 1
