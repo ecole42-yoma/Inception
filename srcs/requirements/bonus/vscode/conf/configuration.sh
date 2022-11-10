@@ -25,26 +25,28 @@ check_error() {
 
 entrypoint_log "$ME: setup vscode 🔍 "
 mkdir -p /app/code-server
+if [ ! -f .check_linux ]
+then
+    entrypoint_log "$ME: code-server not found, downloading it 📥 "
+    wget    https://github.com/coder/code-server/releases/download/v4.8.3/code-server-4.8.3-linux-amd64.tar.gz
+    tar xf code-server-4.8.3-linux-amd64.tar.gz -C /app/code-server --strip-components=1
 
-wget    https://github.com/coder/code-server/releases/download/v4.8.3/code-server-4.8.3-linux-amd64.tar.gz
-tar xf code-server-4.8.3-linux-amd64.tar.gz -C /app/code-server --strip-components=1
+    # wget    https://github.com/coder/code-server/releases/download/v4.8.3/code-server-4.8.3-linux-arm64.tar.gz
+    # tar xf code-server-4.8.3-linux-arm64.tar.gz -C /app/code-server --strip-components=1
 
-# wget    https://github.com/coder/code-server/releases/download/v4.8.3/code-server-4.8.3-linux-arm64.tar.gz
-# tar xf code-server-4.8.3-linux-arm64.tar.gz -C /app/code-server --strip-components=1
+    # wget    https://github.com/coder/code-server/releases/download/v4.8.3/code-server-4.8.3-linux-armv7l.tar.gz
+    # tar xf code-server-4.8.3-linux-armv7l.tar.gz -C /app/code-server --strip-components=1
 
-# wget    https://github.com/coder/code-server/releases/download/v4.8.3/code-server-4.8.3-linux-armv7l.tar.gz
-# tar xf code-server-4.8.3-linux-armv7l.tar.gz -C /app/code-server --strip-components=1
+    ln -s /app/code-server/bin/code-server /usr/bin/code-server
+    touch .check_linux
+else
+    entrypoint_log "$ME: code-server already installed"
+fi
 
-
-
-ln -s /app/code-server/bin/code-server /usr/bin/code-server
 
 
 # mkdir /var/lib/code-server
 
-# sh /app/code-server/node
-
-echo "*****************"
 
 
 # wget -O- 'https://aka.ms/install-vscode-server/setup.sh' | sh
