@@ -1,15 +1,18 @@
-
-version : "3.8"
+version: "3.8"
 
 services:
 
-# mariadb service
+  # mariadb service
   mariadb:
     container_name: db
     build:
       context: requirements/mariadb
     healthcheck:
-      test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
+      test:
+        [
+          'CMD-SHELL',
+          'mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD'
+        ]
       interval: 1s
       timeout: 2s
       retries: 21
@@ -19,10 +22,10 @@ services:
       - backend
     restart: always
     volumes:
-      # - ${INCEPTION_PATH}/db:/var/lib/mysql
-      - db_volume:/var/lib/mysql
+      - ${INCEPTION_PATH}/db:/var/lib/mysql
+      # - db_volume:/var/lib/mysql
 
-#wordpress service
+      #wordpress service
   wordpress:
     container_name: wordpress
     build:
@@ -37,10 +40,10 @@ services:
       mariadb:
         condition: service_healthy
     volumes:
-      # - ${INCEPTION_PATH}/wordpress:/var/www/html
-      - wordpress_volume:/var/www/html
+      - ${INCEPTION_PATH}/wordpress:/var/www/html
+      # - wordpress_volume:/var/www/html
 
-# nginx service
+      # nginx service
   nginx:
     container_name: nginx
     build:
@@ -55,13 +58,13 @@ services:
     depends_on:
       wordpress:
         condition: service_healthy
-      site:
-        condition: service_healthy
+      # # site:
+      #   condition: service_healthy
       # vscode:
       #   condition: service_started
     volumes:
-      # - ${INCEPTION_PATH}/wordpress:/var/www/html
-      - wordpress_volume:/var/www/html
+      - ${INCEPTION_PATH}/wordpress:/var/www/html
+      # - wordpress_volume:/var/www/html
 
 
 
@@ -69,78 +72,78 @@ services:
 
 
 
-# adminer service - bonus
-  adminer:
-    container_name: adminer
-    build:
-      context: requirements/bonus/adminer
-    env_file: .env
-    networks:
-      - backend
-      - frontend
-    restart: always
-    depends_on:
-      mariadb:
-        condition: service_healthy
-      wordpress:
-        condition: service_healthy
+      # # adminer service - bonus
+      #   adminer:
+      #     container_name: adminer
+      #     build:
+      #       context: requirements/bonus/adminer
+      #     env_file: .env
+      #     networks:
+      #       - backend
+      #       - frontend
+      #     restart: always
+      #     depends_on:
+      #       mariadb:
+      #         condition: service_healthy
+      #       wordpress:
+      #         condition: service_healthy
 
-# static site : profile - bonus
-  site:
-    container_name: site
-    build:
-      context: requirements/bonus/site
-    env_file: .env
-    networks:
-      - static_site_network
-    restart: always
+      # # static site : profile - bonus
+      #   site:
+      #     container_name: site
+      #     build:
+      #       context: requirements/bonus/site
+      #     env_file: .env
+      #     networks:
+      #       - static_site_network
+      #     restart: always
 
-# redis : cache - bonus
-  redis:
-    container_name: redis
-    build:
-      context: requirements/bonus/redis
-    env_file: .env
-    networks:
-      - cache_server
-    restart: always
-    depends_on:
-      wordpress:
-        condition: service_healthy
+      # # redis : cache - bonus
+      #   redis:
+      #     container_name: redis
+      #     build:
+      #       context: requirements/bonus/redis
+      #     env_file: .env
+      #     networks:
+      #       - cache_server
+      #     restart: always
+      #     depends_on:
+      #       wordpress:
+      #         condition: service_healthy
 
-# vsftpd : ftp - bonus not supported tls env...
-  ftp:
-    container_name: ftp
-    build:
-      context: requirements/bonus/ftp
-    env_file: .env
-    ports:
-      - "21:21"
-      - "20:20"
-      - "$FTP_PORT_MIN-$FTP_PORT_MAX:$FTP_PORT_MIN-$FTP_PORT_MAX"
-    networks:
-      - frontend
-    restart: always
-    depends_on:
-      nginx:
-        condition: service_healthy
-    volumes:
-      # - ${INCEPTION_PATH}/wordpress:/var/www/html
-      - wordpress_volume:/var/www/html
+      # # vsftpd : ftp - bonus not supported tls env...
+      #   ftp:
+      #     container_name: ftp
+      #     build:
+      #       context: requirements/bonus/ftp
+      #     env_file: .env
+      #     ports:
+      #       - "21:21"
+      #       - "20:20"
+      #       - "$FTP_PORT_MIN-$FTP_PORT_MAX:$FTP_PORT_MIN-$FTP_PORT_MAX"
+      #     networks:
+      #       - frontend
+      #     restart: always
+      #     depends_on:
+      #       nginx:
+      #         condition: service_healthy
+      #     volumes:
+      #       - ${INCEPTION_PATH}/wordpress:/var/www/html
+      #       # - wordpress_volume:/var/www/html
 
-# vscode server : vscode server - bonus
-  vscode:
-    container_name: vscode
-    build:
-      context: requirements/bonus/vscode
-    env_file: .env
-    ports:
-      - 8443:8443
-    networks:
-      - frontend
-    restart: unless-stopped
-    volumes:
-      - wordpress_volume:/config
+      # # vscode server : vscode server - bonus
+      #   vscode:
+      #     container_name: vscode
+      #     build:
+      #       context: requirements/bonus/vscode
+      #     env_file: .env
+      #     ports:
+      #       - 8443:8443
+      #     networks:
+      #       - frontend
+      #     restart: unless-stopped
+      #     volumes:
+      #       - wordpress_volume:/config
 
 
 networks:

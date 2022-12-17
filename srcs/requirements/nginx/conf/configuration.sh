@@ -64,26 +64,26 @@ server {
 
 
 
-	location ~ /vscode {
-		proxy_pass 						http://$CODE_NETWORK:8443;
-		proxy_set_header	Host		\$host;
-		proxy_set_header	X-Real-IP	\$remote_addr;
-	}
+	# location ~ /vscode {
+	# 	proxy_pass 						http://$CODE_NETWORK:8443;
+	# 	proxy_set_header	Host		\$host;
+	# 	proxy_set_header	X-Real-IP	\$remote_addr;
+	# }
 
-	location ~ /profile {
-		proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
-	}
+	# location ~ /profile {
+	# 	proxy_pass 						http://$STATIC_SITE_NETWORK:4242;
+	# }
 
-	location ~ /adminer {
-		error_log 						/var/log/nginx/adminer_error.log;
-		access_log 						/var/log/nginx/adminer_access.log;
-		fastcgi_split_path_info			^(.+?\.php)(/.*)$;
-		fastcgi_param HTTP_PROXY		"";
-		fastcgi_pass 					$ADMINER_NETWORK:8080;
-		fastcgi_index					adminer.php;
-		include 						fastcgi_params;
-		fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
-	}
+	# location ~ /adminer {
+	# 	error_log 						/var/log/nginx/adminer_error.log;
+	# 	access_log 						/var/log/nginx/adminer_access.log;
+	# 	fastcgi_split_path_info			^(.+?\.php)(/.*)$;
+	# 	fastcgi_param HTTP_PROXY		"";
+	# 	fastcgi_pass 					$ADMINER_NETWORK:8080;
+	# 	fastcgi_index					adminer.php;
+	# 	include 						fastcgi_params;
+	# 	fastcgi_param SCRIPT_FILENAME 	/var/www/adminer/adminer.php;
+	# }
 
 	location ~ \.php$ {
 		try_files	\$uri				= 404;
